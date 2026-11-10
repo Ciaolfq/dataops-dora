@@ -1,0 +1,47 @@
+# ============================================================
+# DORA (DataOps Retrieval Assistant) 配置文件
+# ICDE-2027 Paper Replication Package
+# ============================================================
+
+# 服务配置
+service:
+  host: "0.0.0.0"
+  port: 8000
+
+# 向量库配置
+vector_store:
+  persist_path: "./chroma_db"
+  collection_name: "dora_fault_docs"
+  top_n: 10            # 初始检索返回文档数
+  embedding_model: "all-MiniLM-L6-v2"
+
+# LLM 配置（OpenAI 兼容格式）
+# 支持 DeepSeek、Qwen、GPT 等所有兼容 OpenAI API 格式的服务
+# API Key 建议通过环境变量 DEEPSEEK_API_KEY 或 OPENAI_API_KEY 设置
+llm:
+  provider: "openai_compatible"
+  api_key: "${DEEPSEEK_API_KEY:your-api-key-here}"
+  base_url: "https://api.deepseek.com/v1"
+  model_name: "deepseek-chat"
+  temperature: 0.1
+  max_tokens: 2048
+  timeout: 60
+  max_retries: 3
+
+# Cross-Encoder 重排配置
+rerank:
+  enabled: true
+  model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  top_n_after_rerank: 5    # 重排后保留的文档数
+  batch_size: 32
+
+# 查询重写配置（错误感知 + 多路召回）
+query_rewrite:
+  enabled: true
+  num_expansions: 3        # 生成扩展查询数量
+  extract_error_info: true # 是否从查询中提取错误信息
+
+# 日志配置
+log:
+  level: "INFO"
+  format: "[%(asctime)s] %(levelname)s | %(name)s: %(message)s"

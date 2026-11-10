@@ -1,0 +1,669 @@
+[
+  {
+    "id": "KB-001",
+    "category": "dbt_configuration",
+    "title": "dbt_project.yml materialized 配置说明",
+    "content": "在 dbt_project.yml 中，可以为不同目录的模型指定默认的 materialization 方式。\n支持的 materialized 类型包括：\n- table: 每次运行都重建表（CREATE OR REPLACE TABLE AS）\n- view: 每次运行都重建视图（CREATE OR REPLACE VIEW AS）\n- incremental: 增量构建，只处理新增或变更的数据\n- ephemeral: 临时 CTE，不物化到数据库\n- materialized_view: 物化视图（需要数据库支持）\n\n示例配置：\nmodels:\n  my_project:\n    staging:\n      +materialized: view\n    marts:\n      +materialized: table\n      finance:\n        +materialized: incremental\n\n常见错误：materialized 拼写错误（如 'tabel', 'veiw', 'incrementl'）会导致编译失败。",
+    "tags": [
+      "dbt",
+      "configuration",
+      "materialization",
+      "dbt_project.yml"
+    ]
+  },
+  {
+    "id": "KB-002",
+    "category": "dbt_configuration",
+    "title": "dbt profiles.yml 配置详解",
+    "content": "profiles.yml 是 dbt 的连接配置文件，定义了如何连接到数据仓库。\n文件位置通常在 ~/.dbt/profiles.yml 或项目根目录。\n\n基本结构：\nmy_profile:\n  target: dev\n  outputs:\n    dev:\n      type: postgres\n      host: localhost\n      user: my_user\n      password: my_password\n      port: 5432\n      dbname: my_db\n      schema: dbt_dev\n      threads: 4\n\n关键参数：\n- schema: dbt 创建的所有对象将放在此 schema 下\n- threads: 并行运行的模型数量\n- target: 当前激活的环境\n\n常见问题：\n1. schema 配置错误导致找不到源表\n2. 密码错误导致连接失败\n3. 端口配置不正确",
+    "tags": [
+      "dbt",
+      "configuration",
+      "profiles.yml",
+      "connection"
+    ]
+  },
+  {
+    "id": "KB-003",
+    "category": "dbt_configuration",
+    "title": "dbt packages.yml 依赖管理",
+    "content": "dbt 使用 packages.yml 管理外部包依赖。\n\n示例：\npackages:\n  - package: dbt-labs/dbt_utils\n    version: 1.1.0\n  - package: dbt-labs/codegen\n    version: 0.12.1\n  - package: calogica/dbt_expectations\n    version: 0.10.0\n\n常用命令：\n- dbt deps: 安装 packages.yml 中定义的所有包\n- dbt clean: 清理 dbt_packages 目录\n\n常见错误：\n1. 包名拼写错误：dbt-labs/dbt_utils 才是正确的\n2. 版本号不存在：请去 dbt Hub 确认最新版本\n3. 版本不兼容：包版本需要与 dbt 版本匹配",
+    "tags": [
+      "dbt",
+      "packages",
+      "dependencies",
+      "dbt deps"
+    ]
+  },
+  {
+    "id": "KB-004",
+    "category": "dbt_errors",
+    "title": "dbt 编译错误：Invalid materialization",
+    "content": "错误信息：\nCompilation Error\n  Invalid materialization 'xxx' specified for model 'yyy'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n原因：\ndbt_project.yml 或模型文件的 config 块中指定了无效的 materialization 值。\n通常是拼写错误导致的，例如：\n- 'tabel' 应为 'table'\n- 'veiw' 应为 'view'\n- 'incrementl' 应为 'incremental'\n\n修复方法：\n1. 检查 dbt_project.yml 中的 materialized 配置\n2. 检查模型文件顶部的 {{ config(materialized='...') }}\n3. 修正拼写错误\n4. 运行 dbt parse 验证\n\n相关关键词：materialized, compilation error, invalid, dbt_project.yml, config",
+    "tags": [
+      "dbt",
+      "error",
+      "compilation",
+      "materialized",
+      "spelling"
+    ]
+  },
+  {
+    "id": "KB-005",
+    "category": "dbt_errors",
+    "title": "dbt 数据库错误：relation does not exist",
+    "content": "错误信息：\nDatabase Error in model xxx (models/yyy.sql)\n  relation \"schema.table\" does not exist\n  LINE N: from schema.table\n\n原因：\nSQL 查询引用了不存在的表或视图。可能的原因：\n1. 源表名称拼写错误\n2. schema 配置不正确\n3. 上游模型尚未运行\n4. 表被删除或重命名\n\n修复方法：\n1. 确认表名拼写是否正确\n2. 检查 profiles.yml 中的 schema 配置\n3. 确保上游模型已经成功运行\n4. 检查 source.yml 中的源定义是否正确\n5. 运行 dbt ls 查看项目中的所有模型\n\n相关关键词：relation does not exist, table not found, schema, source, database error",
+    "tags": [
+      "dbt",
+      "error",
+      "database",
+      "table not found",
+      "relation"
+    ]
+  },
+  {
+    "id": "KB-006",
+    "category": "dbt_errors",
+    "title": "dbt 数据库错误：permission denied",
+    "content": "错误信息：\nDatabase Error in model xxx\n  permission denied for relation table_name\n  LINE N: from schema.table_name\n\n原因：\ndbt 使用的数据库用户没有足够的权限访问源表或执行操作。\n\n修复方法：\n1. 确认 dbt profile 中配置的数据库用户名\n2. 授予必要的权限：\n   - 对源表的 SELECT 权限\n   - 对目标 schema 的 CREATE 和 USAGE 权限\n   - 对已有表的 INSERT/UPDATE/DELETE 权限\n\nSQL 示例：\nGRANT USAGE ON SCHEMA raw TO dbt_user;\nGRANT SELECT ON ALL TABLES IN SCHEMA raw TO dbt_user;\nALTER DEFAULT PRIVILEGES IN SCHEMA raw GRANT SELECT ON TABLES TO dbt_user;\n\n相关关键词：permission denied, access denied, grant, privileges, database user",
+    "tags": [
+      "dbt",
+      "error",
+      "permission",
+      "grant",
+      "access denied"
+    ]
+  },
+  {
+    "id": "KB-007",
+    "category": "dbt_errors",
+    "title": "dbt 错误：column does not exist",
+    "content": "错误信息：\nDatabase Error in model xxx\n  column \"column_name\" does not exist\n  LINE N:   column_name\n\n原因：\nSQL 查询引用了不存在的列。可能的原因：\n1. 列名拼写错误\n2. 上游 schema 变更（列被重命名或删除）\n3. 使用了错误的别名\n\n修复方法：\n1. 检查源表的实际列结构（\\d table_name）\n2. 确认列名是否正确\n3. 如果上游 schema 变更，更新模型中的列引用\n4. 检查 CTE 和子查询中的列别名\n\n相关关键词：column does not exist, column not found, schema change, column name",
+    "tags": [
+      "dbt",
+      "error",
+      "column",
+      "schema mismatch",
+      "database"
+    ]
+  },
+  {
+    "id": "KB-008",
+    "category": "dbt_errors",
+    "title": "dbt 错误：duplicate key value violates unique constraint",
+    "content": "错误信息：\nDatabase Error in model xxx\n  duplicate key value violates unique constraint \"constraint_name\"\n  DETAIL:  Key (column)=(value) already exists.\n\n原因：\n插入数据时违反了唯一约束或主键约束。\n\n修复方法：\n1. 查找重复数据：\n   SELECT column, count(*) \n   FROM source_table \n   GROUP BY column \n   HAVING count(*) > 1;\n2. 在模型中添加去重逻辑：\n   SELECT DISTINCT ...\n   或使用 row_number() over (partition by ... order by ...)\n3. 如果是增量模型，检查 unique_key 配置\n4. 修复上游数据质量问题\n\n相关关键词：duplicate key, unique constraint, primary key, deduplication, data quality",
+    "tags": [
+      "dbt",
+      "error",
+      "constraint",
+      "duplicate",
+      "data quality"
+    ]
+  },
+  {
+    "id": "KB-009",
+    "category": "dbt_errors",
+    "title": "dbt 错误：deadlock detected",
+    "content": "错误信息：\nDatabase Error in model xxx\n  deadlock detected\n  DETAIL:  Process N waits for AccessExclusiveLock on relation M ...\n  CONTEXT:  SQL statement \"TRUNCATE TABLE ...\"\n\n原因：\n多个 dbt 进程或多个模型同时操作同一张表，导致数据库死锁。\n常见于 table materialization 的模型（会执行 TRUNCATE + INSERT）。\n\n修复方法：\n1. 减少并发数（dbt run --threads 1）\n2. 调整模型依赖关系，避免相关模型同时运行\n3. 使用 incremental materialization 替代 table\n4. 在 Airflow 中使用 Pool 限制并发任务数\n5. 调整 DAG 调度时间错开\n\n相关关键词：deadlock, concurrency, lock, truncate, concurrent update",
+    "tags": [
+      "dbt",
+      "error",
+      "deadlock",
+      "concurrency",
+      "lock"
+    ]
+  },
+  {
+    "id": "KB-010",
+    "category": "airflow_errors",
+    "title": "Airflow 错误：Broken DAG - No module named",
+    "content": "错误信息：\nBroken DAG: [/opt/airflow/dags/dag_file.py] No module named 'module_name'\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/dag_file.py\", line N, in <module>\n    import module_name\nModuleNotFoundError: No module named 'module_name'\n\n原因：\nAirflow DAG 文件导入了未安装的 Python 模块。\n\n修复方法：\n1. 如果是第三方库：\n   - 在 requirements.txt 中添加依赖\n   - 重新构建 Airflow 镜像\n   - 或在运行环境中执行 pip install\n2. 如果是自定义模块：\n   - 确保模块在 PYTHONPATH 中\n   - 或将模块放入 plugins/ 目录\n3. 重启 Airflow webserver 和 scheduler\n\n相关关键词：Broken DAG, ModuleNotFoundError, import, plugin, requirements",
+    "tags": [
+      "airflow",
+      "error",
+      "DAG",
+      "import",
+      "module not found"
+    ]
+  },
+  {
+    "id": "KB-011",
+    "category": "airflow_errors",
+    "title": "Airflow 错误：Scheduler heartbeat lost",
+    "content": "错误信息：\nThe scheduler does not appear to be running.\nLast heartbeat was received X minutes ago.\n\n原因：\nAirflow Scheduler 进程崩溃或失去心跳。可能的原因：\n1. 内存不足（OOM Killer）\n2. 数据库连接中断\n3. 进程被意外终止\n4. 资源耗尽\n\n修复方法：\n1. 检查 Scheduler 进程状态：ps aux | grep scheduler\n2. 查看 Scheduler 日志排查崩溃原因\n3. 重启 Scheduler 服务\n4. 检查元数据库连接是否正常\n5. 增加内存或减少并发任务数\n6. 考虑部署多个 Scheduler 实例实现高可用\n\n相关关键词：scheduler, heartbeat, crashed, OOM, not running",
+    "tags": [
+      "airflow",
+      "error",
+      "scheduler",
+      "heartbeat",
+      "crash"
+    ]
+  },
+  {
+    "id": "KB-012",
+    "category": "airflow_errors",
+    "title": "Airflow 错误：Task timed out",
+    "content": "错误信息：\nairflow.exceptions.AirflowException: Task timed out after Ns\n\n原因：\nAirflow Task 运行时间超过了配置的 timeout 限制。\n\n修复方法：\n1. 分析任务运行慢的原因：\n   - 查看任务日志\n   - 检查是否有性能瓶颈\n2. 增加超时时间：\n   - 在 Operator 中设置 execution_timeout\n   - 或在 default_args 中配置\n3. 优化任务本身：\n   - 优化 SQL 查询\n   - 使用增量处理\n   - 增加资源\n4. 拆分大任务为多个小任务\n\n示例：\ntask = PythonOperator(\n    task_id='my_task',\n    python_callable=my_func,\n    execution_timeout=timedelta(hours=2),\n    dag=dag,\n)\n\n相关关键词：timeout, execution_timeout, task failed, long running",
+    "tags": [
+      "airflow",
+      "error",
+      "timeout",
+      "task",
+      "performance"
+    ]
+  },
+  {
+    "id": "KB-013",
+    "category": "airflow_errors",
+    "title": "Airflow Connection 认证失败",
+    "content": "错误信息：\nAuthentication failed.\nUsername and/or password incorrect.\n或\nFATAL:  password authentication failed for user \"username\"\n\n原因：\nAirflow Connection 中配置的用户名或密码错误。\n\n修复方法：\n1. 在 Airflow UI 中进入 Admin -> Connections\n2. 找到对应的 Connection 并编辑\n3. 验证 Login 和 Password 配置\n4. 点击 Test 按钮测试连接\n5. 重新触发失败的 Task\n\n常见的 Connection 类型：\n- postgres: PostgreSQL 数据库连接\n- mysql: MySQL 数据库连接\n- snowflake: Snowflake 数据仓库\n- http: HTTP API 连接\n- aws: AWS 服务连接\n\n相关关键词：connection, authentication, password, login, credentials",
+    "tags": [
+      "airflow",
+      "error",
+      "connection",
+      "authentication",
+      "credentials"
+    ]
+  },
+  {
+    "id": "KB-014",
+    "category": "postgres_errors",
+    "title": "PostgreSQL 错误：too many clients already",
+    "content": "错误信息：\nFATAL:  sorry, too many clients already\nDETAIL:  Connection count exceeds max_connections limit.\n\n原因：\n数据库连接数已达到 max_connections 配置的上限。\n\n修复方法：\n1. 查看当前连接数：\n   SELECT count(*) FROM pg_stat_activity;\n2. 查看空闲连接：\n   SELECT * FROM pg_stat_activity WHERE state = 'idle';\n3. 短期解决方案：终止空闲连接\n   SELECT pg_terminate_backend(pid) \n   FROM pg_stat_activity \n   WHERE state = 'idle' AND state_change < NOW() - INTERVAL '1 hour';\n4. 长期解决方案：\n   - 增加 max_connections 配置（需要重启）\n   - 使用连接池（PgBouncer, Pgpool-II）\n   - 优化应用连接管理\n\n相关关键词：max_connections, too many clients, connection pool, pgbouncer",
+    "tags": [
+      "postgres",
+      "error",
+      "connections",
+      "max_connections",
+      "pgbouncer"
+    ]
+  },
+  {
+    "id": "KB-015",
+    "category": "postgres_errors",
+    "title": "PostgreSQL 错误：No space left on device",
+    "content": "错误信息：\ncould not extend file \"...\": No space left on device\nHINT: Free up disk space or scale up storage.\n\n原因：\n数据库服务器的磁盘空间已满。\n\n修复方法：\n1. 检查磁盘使用情况：df -h\n2. 查找大文件和大表：\n   SELECT pg_size_pretty(pg_total_relation_size(relid)) AS size,\n          relname\n   FROM pg_stat_user_tables\n   ORDER BY pg_total_relation_size(relid) DESC\n   LIMIT 10;\n3. 清理空间：\n   - 删除不需要的表：DROP TABLE ...\n   - 清理 WAL 日志（确保归档正常）\n   - VACUUM FULL 回收空间（注意：会锁表）\n4. 扩容：增加磁盘空间\n5. 预防：\n   - 设置磁盘空间监控告警\n   - 定期清理临时表和过期数据\n   - 配置表空间管理\n\n相关关键词：disk full, no space left, storage, disk space, vacuum",
+    "tags": [
+      "postgres",
+      "error",
+      "disk",
+      "storage",
+      "space"
+    ]
+  },
+  {
+    "id": "KB-016",
+    "category": "postgres_errors",
+    "title": "PostgreSQL 错误：connection timed out",
+    "content": "错误信息：\ncould not connect to server: Connection timed out\nIs the server running on host \"hostname\" and accepting TCP/IP connections on port 5432?\n\n原因：\n客户端无法连接到 PostgreSQL 服务器。可能的原因：\n1. 数据库服务器未运行\n2. 网络不通（防火墙、安全组）\n3. 端口配置错误\n4. listen_addresses 配置限制\n\n修复方法：\n1. 检查数据库服务是否运行：\n   systemctl status postgresql\n2. 测试网络连通性：\n   ping hostname\n   telnet hostname 5432\n3. 检查防火墙和安全组设置\n4. 检查 postgresql.conf 中的 listen_addresses\n5. 检查 pg_hba.conf 中的访问控制\n\n相关关键词：connection refused, timeout, network, firewall, listen_addresses",
+    "tags": [
+      "postgres",
+      "error",
+      "connection",
+      "network",
+      "timeout"
+    ]
+  },
+  {
+    "id": "KB-017",
+    "category": "postgres_errors",
+    "title": "PostgreSQL 错误：could not serialize access due to concurrent update",
+    "content": "错误信息：\ncould not serialize access due to concurrent update\nDETAIL:  Reason code: N.\nHINT: The transaction might succeed if retried.\n\n原因：\n多个事务同时修改同一行数据，导致序列化失败。\n常见于可串行化隔离级别或高并发写入场景。\n\n修复方法：\n1. 应用层实现重试逻辑\n2. 降低隔离级别（如从 SERIALIZABLE 降到 READ COMMITTED）\n3. 优化更新顺序，避免死锁\n4. 使用 SELECT ... FOR UPDATE 显式加锁\n5. 减少事务大小，缩短持锁时间\n6. 使用 ON CONFLICT 处理 UPSERT 场景\n\n相关关键词：concurrent update, serialization, isolation level, lock, retry",
+    "tags": [
+      "postgres",
+      "error",
+      "concurrency",
+      "isolation",
+      "lock"
+    ]
+  },
+  {
+    "id": "KB-018",
+    "category": "data_quality",
+    "title": "dbt tests 概览",
+    "content": "dbt 内置了多种数据质量测试：\n\n1. unique: 验证列值唯一\n   - 配置方式：在 schema.yml 中添加 tests: [unique]\n   - 失败原因：数据中有重复值\n\n2. not_null: 验证列不为空\n   - 配置方式：在 schema.yml 中添加 tests: [not_null]\n   - 失败原因：数据中有 NULL 值\n\n3. accepted_values: 验证列值在指定范围内\n   - 配置方式：tests: [{accepted_values: {values: ['a', 'b', 'c']}}]\n   - 失败原因：列值不在指定列表中\n\n4. relationships: 验证外键关系\n   - 配置方式：tests: [{relationships: {to: ref('other_model'), field: id}}]\n   - 失败原因：外键值在父表中不存在\n\n运行测试：\n- dbt test: 运行所有测试\n- dbt test --select model_name: 运行指定模型的测试\n- dbt test --store-failures: 将失败的测试结果保存到表中\n\n相关关键词：dbt test, data quality, unique, not_null, schema.yml",
+    "tags": [
+      "dbt",
+      "testing",
+      "data quality",
+      "schema.yml",
+      "tests"
+    ]
+  },
+  {
+    "id": "KB-019",
+    "category": "data_quality",
+    "title": "唯一约束和主键约束的区别",
+    "content": "PostgreSQL 中唯一约束和主键约束的区别：\n\n主键约束（PRIMARY KEY）：\n- 自动创建唯一索引\n- 列值不允许为 NULL\n- 一个表只能有一个主键\n- 自动成为聚簇索引（InnoDB 中）\n\n唯一约束（UNIQUE）：\n- 自动创建唯一索引\n- 列值允许为 NULL（且多个 NULL 不违反唯一性）\n- 一个表可以有多个唯一约束\n- 可以作为外键的引用目标\n\n在 dbt 中：\n- unique test 对应唯一约束\n- 可以同时使用 unique 和 not_null 模拟主键约束\n\n常见问题：\n1. 主键冲突：重复插入相同主键值\n2. NULL 值问题：唯一约束允许多个 NULL\n3. 性能：唯一索引会影响写入性能\n\n相关关键词：primary key, unique constraint, index, NULL, duplicate",
+    "tags": [
+      "postgres",
+      "constraint",
+      "primary key",
+      "unique",
+      "index"
+    ]
+  },
+  {
+    "id": "KB-020",
+    "category": "data_quality",
+    "title": "数据去重最佳实践",
+    "content": "SQL 中常见的去重方法：\n\n方法 1: DISTINCT\nSELECT DISTINCT col1, col2 FROM table;\n适用于整行去重。\n\n方法 2: row_number() 窗口函数\nSELECT * FROM (\n    SELECT *,\n        row_number() OVER (\n            PARTITION BY key_col \n            ORDER BY created_at DESC\n        ) as rn\n    FROM table\n) WHERE rn = 1;\n适用于按某列去重，保留最新记录。\n\n方法 3: GROUP BY\nSELECT col1, col2, max(created_at) \nFROM table \nGROUP BY col1, col2;\n适用于聚合统计。\n\n方法 4: EXISTS / NOT EXISTS\nSELECT t1.* FROM table t1\nWHERE NOT EXISTS (\n    SELECT 1 FROM table t2 \n    WHERE t2.key = t1.key AND t2.id > t1.id\n);\n适用于保留最大 ID 的记录。\n\n在 dbt 中的应用：\n- staging 层通常需要去重\n- 使用 row_number() 控制去重逻辑\n- 配合 dbt test unique 验证去重效果\n\n相关关键词：deduplication, distinct, row_number, group by, duplicate data",
+    "tags": [
+      "sql",
+      "deduplication",
+      "data quality",
+      "window function"
+    ]
+  },
+  {
+    "id": "KB-021",
+    "category": "performance",
+    "title": "dbt 性能优化指南",
+    "content": "dbt 项目性能优化建议：\n\n1. 使用增量模型（incremental）\n   - 只处理新增/变更数据\n   - 适合大数据量表\n   - 配置 unique_key 用于去重\n\n2. 增加并发线程数\n   - dbt run --threads 8\n   - 根据数据库承载能力调整\n\n3. 优化 SQL 查询\n   - 避免 SELECT *\n   - 尽早过滤数据\n   - 使用合适的 JOIN 顺序\n   - 添加合适的索引\n\n4. 模型分层设计\n   - staging 层：轻量转换\n   - intermediate 层：业务逻辑\n   - marts 层：最终报表\n   - 避免在一个模型中做太多事情\n\n5. 使用 materialized view\n   - 适合频繁查询的大表\n   - 自动刷新策略\n\n6. 分区表\n   - 大表按时间分区\n   - 查询时自动裁剪分区\n\n相关关键词：performance, optimization, incremental, tuning, speed",
+    "tags": [
+      "dbt",
+      "performance",
+      "optimization",
+      "incremental",
+      "tuning"
+    ]
+  },
+  {
+    "id": "KB-022",
+    "category": "performance",
+    "title": "PostgreSQL 查询性能优化",
+    "content": "PostgreSQL 查询性能优化常用方法：\n\n1. 索引优化\n   - 为 WHERE、JOIN、ORDER BY 列创建索引\n   - 使用 EXPLAIN ANALYZE 分析执行计划\n   - 考虑复合索引\n\n2. 查询重写\n   - 避免在索引列上使用函数\n   - 使用 EXISTS 替代 IN\n   - 避免 SELECT *\n   - 尽早过滤数据\n\n3. 统计信息\n   - 运行 ANALYZE 更新统计信息\n   - 调整 default_statistics_target\n\n4. 配置参数\n   - work_mem: 排序和哈希操作的内存\n   - shared_buffers: 共享缓冲区大小\n   - effective_cache_size: 优化器估计缓存大小\n   - maintenance_work_mem: 维护操作内存\n\n5. 连接配置\n   - 使用连接池减少连接开销\n   - 调整 max_connections\n\n6. 监控工具\n   - pg_stat_statements: 慢查询分析\n   - EXPLAIN ANALYZE: 执行计划分析\n   - pg_stat_activity: 活动会话监控\n\n相关关键词：query optimization, index, explain, performance tuning, postgresql",
+    "tags": [
+      "postgres",
+      "performance",
+      "index",
+      "explain",
+      "optimization"
+    ]
+  },
+  {
+    "title": "dbt_project.yml materialized 配置说明 - 常见问题解答",
+    "content": "在 dbt_project.yml 中，可以为不同目录的模型指定默认的 materialization 方式。\n支持的 materialized 类型包括：\n- table: 每次运行都重建表（CREATE OR REPLACE TABLE AS）\n- view: 每次运行都重建视图（CREATE OR REPLACE VIEW AS）\n- incremental: 增量构建，只处理新增或变更的数据\n- ephemeral: 临时 CTE，不物化到数据库\n- materialized_view: 物化视图（需要数据库支持）\n\n示例配置：\nmodels:\n  my_project:\n    staging:\n      +materialized: view\n    marts:\n      +materialized: table\n      finance:\n        +materialized: incremental\n\n常见错误：materialized 拼写错误（如 'tabel', 'veiw', 'incrementl'）会导致编译失败。\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "configuration",
+      "materialization",
+      "dbt_project.yml",
+      "FAQ"
+    ],
+    "id": "KB-023",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt profiles.yml 配置详解 - 常见问题解答",
+    "content": "profiles.yml 是 dbt 的连接配置文件，定义了如何连接到数据仓库。\n文件位置通常在 ~/.dbt/profiles.yml 或项目根目录。\n\n基本结构：\nmy_profile:\n  target: dev\n  outputs:\n    dev:\n      type: postgres\n      host: localhost\n      user: my_user\n      password: my_password\n      port: 5432\n      dbname: my_db\n      schema: dbt_dev\n      threads: 4\n\n关键参数：\n- schema: dbt 创建的所有对象将放在此 schema 下\n- threads: 并行运行的模型数量\n- target: 当前激活的环境\n\n常见问题：\n1. schema 配置错误导致找不到源表\n2. 密码错误导致连接失败\n3. 端口配置不正确\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "configuration",
+      "profiles.yml",
+      "connection",
+      "FAQ"
+    ],
+    "id": "KB-024",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt packages.yml 依赖管理 - 常见问题解答",
+    "content": "dbt 使用 packages.yml 管理外部包依赖。\n\n示例：\npackages:\n  - package: dbt-labs/dbt_utils\n    version: 1.1.0\n  - package: dbt-labs/codegen\n    version: 0.12.1\n  - package: calogica/dbt_expectations\n    version: 0.10.0\n\n常用命令：\n- dbt deps: 安装 packages.yml 中定义的所有包\n- dbt clean: 清理 dbt_packages 目录\n\n常见错误：\n1. 包名拼写错误：dbt-labs/dbt_utils 才是正确的\n2. 版本号不存在：请去 dbt Hub 确认最新版本\n3. 版本不兼容：包版本需要与 dbt 版本匹配\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "packages",
+      "dependencies",
+      "dbt deps",
+      "FAQ"
+    ],
+    "id": "KB-025",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt 编译错误：Invalid materialization - 常见问题解答",
+    "content": "错误信息：\nCompilation Error\n  Invalid materialization 'xxx' specified for model 'yyy'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n原因：\ndbt_project.yml 或模型文件的 config 块中指定了无效的 materialization 值。\n通常是拼写错误导致的，例如：\n- 'tabel' 应为 'table'\n- 'veiw' 应为 'view'\n- 'incrementl' 应为 'incremental'\n\n修复方法：\n1. 检查 dbt_project.yml 中的 materialized 配置\n2. 检查模型文件顶部的 {{ config(materialized='...') }}\n3. 修正拼写错误\n4. 运行 dbt parse 验证\n\n相关关键词：materialized, compilation error, invalid, dbt_project.yml, config\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "compilation",
+      "materialized",
+      "spelling",
+      "FAQ"
+    ],
+    "id": "KB-026",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 数据库错误：relation does not exist - 常见问题解答",
+    "content": "错误信息：\nDatabase Error in model xxx (models/yyy.sql)\n  relation \"schema.table\" does not exist\n  LINE N: from schema.table\n\n原因：\nSQL 查询引用了不存在的表或视图。可能的原因：\n1. 源表名称拼写错误\n2. schema 配置不正确\n3. 上游模型尚未运行\n4. 表被删除或重命名\n\n修复方法：\n1. 确认表名拼写是否正确\n2. 检查 profiles.yml 中的 schema 配置\n3. 确保上游模型已经成功运行\n4. 检查 source.yml 中的源定义是否正确\n5. 运行 dbt ls 查看项目中的所有模型\n\n相关关键词：relation does not exist, table not found, schema, source, database error\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "database",
+      "table not found",
+      "relation",
+      "FAQ"
+    ],
+    "id": "KB-027",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 数据库错误：permission denied - 常见问题解答",
+    "content": "错误信息：\nDatabase Error in model xxx\n  permission denied for relation table_name\n  LINE N: from schema.table_name\n\n原因：\ndbt 使用的数据库用户没有足够的权限访问源表或执行操作。\n\n修复方法：\n1. 确认 dbt profile 中配置的数据库用户名\n2. 授予必要的权限：\n   - 对源表的 SELECT 权限\n   - 对目标 schema 的 CREATE 和 USAGE 权限\n   - 对已有表的 INSERT/UPDATE/DELETE 权限\n\nSQL 示例：\nGRANT USAGE ON SCHEMA raw TO dbt_user;\nGRANT SELECT ON ALL TABLES IN SCHEMA raw TO dbt_user;\nALTER DEFAULT PRIVILEGES IN SCHEMA raw GRANT SELECT ON TABLES TO dbt_user;\n\n相关关键词：permission denied, access denied, grant, privileges, database user\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "permission",
+      "grant",
+      "access denied",
+      "FAQ"
+    ],
+    "id": "KB-028",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 错误：column does not exist - 常见问题解答",
+    "content": "错误信息：\nDatabase Error in model xxx\n  column \"column_name\" does not exist\n  LINE N:   column_name\n\n原因：\nSQL 查询引用了不存在的列。可能的原因：\n1. 列名拼写错误\n2. 上游 schema 变更（列被重命名或删除）\n3. 使用了错误的别名\n\n修复方法：\n1. 检查源表的实际列结构（\\d table_name）\n2. 确认列名是否正确\n3. 如果上游 schema 变更，更新模型中的列引用\n4. 检查 CTE 和子查询中的列别名\n\n相关关键词：column does not exist, column not found, schema change, column name\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "column",
+      "schema mismatch",
+      "database",
+      "FAQ"
+    ],
+    "id": "KB-029",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 错误：duplicate key value violates unique constraint - 常见问题解答",
+    "content": "错误信息：\nDatabase Error in model xxx\n  duplicate key value violates unique constraint \"constraint_name\"\n  DETAIL:  Key (column)=(value) already exists.\n\n原因：\n插入数据时违反了唯一约束或主键约束。\n\n修复方法：\n1. 查找重复数据：\n   SELECT column, count(*) \n   FROM source_table \n   GROUP BY column \n   HAVING count(*) > 1;\n2. 在模型中添加去重逻辑：\n   SELECT DISTINCT ...\n   或使用 row_number() over (partition by ... order by ...)\n3. 如果是增量模型，检查 unique_key 配置\n4. 修复上游数据质量问题\n\n相关关键词：duplicate key, unique constraint, primary key, deduplication, data quality\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "constraint",
+      "duplicate",
+      "data quality",
+      "FAQ"
+    ],
+    "id": "KB-030",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 错误：deadlock detected - 常见问题解答",
+    "content": "错误信息：\nDatabase Error in model xxx\n  deadlock detected\n  DETAIL:  Process N waits for AccessExclusiveLock on relation M ...\n  CONTEXT:  SQL statement \"TRUNCATE TABLE ...\"\n\n原因：\n多个 dbt 进程或多个模型同时操作同一张表，导致数据库死锁。\n常见于 table materialization 的模型（会执行 TRUNCATE + INSERT）。\n\n修复方法：\n1. 减少并发数（dbt run --threads 1）\n2. 调整模型依赖关系，避免相关模型同时运行\n3. 使用 incremental materialization 替代 table\n4. 在 Airflow 中使用 Pool 限制并发任务数\n5. 调整 DAG 调度时间错开\n\n相关关键词：deadlock, concurrency, lock, truncate, concurrent update\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "error",
+      "deadlock",
+      "concurrency",
+      "lock",
+      "FAQ"
+    ],
+    "id": "KB-031",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "Airflow 错误：Broken DAG - No module named - 常见问题解答",
+    "content": "错误信息：\nBroken DAG: [/opt/airflow/dags/dag_file.py] No module named 'module_name'\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/dag_file.py\", line N, in <module>\n    import module_name\nModuleNotFoundError: No module named 'module_name'\n\n原因：\nAirflow DAG 文件导入了未安装的 Python 模块。\n\n修复方法：\n1. 如果是第三方库：\n   - 在 requirements.txt 中添加依赖\n   - 重新构建 Airflow 镜像\n   - 或在运行环境中执行 pip install\n2. 如果是自定义模块：\n   - 确保模块在 PYTHONPATH 中\n   - 或将模块放入 plugins/ 目录\n3. 重启 Airflow webserver 和 scheduler\n\n相关关键词：Broken DAG, ModuleNotFoundError, import, plugin, requirements\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "airflow",
+      "error",
+      "DAG",
+      "import",
+      "module not found",
+      "FAQ"
+    ],
+    "id": "KB-032",
+    "category": "airflow_errors"
+  },
+  {
+    "title": "Airflow 错误：Scheduler heartbeat lost - 常见问题解答",
+    "content": "错误信息：\nThe scheduler does not appear to be running.\nLast heartbeat was received X minutes ago.\n\n原因：\nAirflow Scheduler 进程崩溃或失去心跳。可能的原因：\n1. 内存不足（OOM Killer）\n2. 数据库连接中断\n3. 进程被意外终止\n4. 资源耗尽\n\n修复方法：\n1. 检查 Scheduler 进程状态：ps aux | grep scheduler\n2. 查看 Scheduler 日志排查崩溃原因\n3. 重启 Scheduler 服务\n4. 检查元数据库连接是否正常\n5. 增加内存或减少并发任务数\n6. 考虑部署多个 Scheduler 实例实现高可用\n\n相关关键词：scheduler, heartbeat, crashed, OOM, not running\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "airflow",
+      "error",
+      "scheduler",
+      "heartbeat",
+      "crash",
+      "FAQ"
+    ],
+    "id": "KB-033",
+    "category": "airflow_errors"
+  },
+  {
+    "title": "Airflow 错误：Task timed out - 常见问题解答",
+    "content": "错误信息：\nairflow.exceptions.AirflowException: Task timed out after Ns\n\n原因：\nAirflow Task 运行时间超过了配置的 timeout 限制。\n\n修复方法：\n1. 分析任务运行慢的原因：\n   - 查看任务日志\n   - 检查是否有性能瓶颈\n2. 增加超时时间：\n   - 在 Operator 中设置 execution_timeout\n   - 或在 default_args 中配置\n3. 优化任务本身：\n   - 优化 SQL 查询\n   - 使用增量处理\n   - 增加资源\n4. 拆分大任务为多个小任务\n\n示例：\ntask = PythonOperator(\n    task_id='my_task',\n    python_callable=my_func,\n    execution_timeout=timedelta(hours=2),\n    dag=dag,\n)\n\n相关关键词：timeout, execution_timeout, task failed, long running\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "airflow",
+      "error",
+      "timeout",
+      "task",
+      "performance",
+      "FAQ"
+    ],
+    "id": "KB-034",
+    "category": "airflow_errors"
+  },
+  {
+    "title": "Airflow Connection 认证失败 - 常见问题解答",
+    "content": "错误信息：\nAuthentication failed.\nUsername and/or password incorrect.\n或\nFATAL:  password authentication failed for user \"username\"\n\n原因：\nAirflow Connection 中配置的用户名或密码错误。\n\n修复方法：\n1. 在 Airflow UI 中进入 Admin -> Connections\n2. 找到对应的 Connection 并编辑\n3. 验证 Login 和 Password 配置\n4. 点击 Test 按钮测试连接\n5. 重新触发失败的 Task\n\n常见的 Connection 类型：\n- postgres: PostgreSQL 数据库连接\n- mysql: MySQL 数据库连接\n- snowflake: Snowflake 数据仓库\n- http: HTTP API 连接\n- aws: AWS 服务连接\n\n相关关键词：connection, authentication, password, login, credentials\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "airflow",
+      "error",
+      "connection",
+      "authentication",
+      "credentials",
+      "FAQ"
+    ],
+    "id": "KB-035",
+    "category": "airflow_errors"
+  },
+  {
+    "title": "PostgreSQL 错误：too many clients already - 常见问题解答",
+    "content": "错误信息：\nFATAL:  sorry, too many clients already\nDETAIL:  Connection count exceeds max_connections limit.\n\n原因：\n数据库连接数已达到 max_connections 配置的上限。\n\n修复方法：\n1. 查看当前连接数：\n   SELECT count(*) FROM pg_stat_activity;\n2. 查看空闲连接：\n   SELECT * FROM pg_stat_activity WHERE state = 'idle';\n3. 短期解决方案：终止空闲连接\n   SELECT pg_terminate_backend(pid) \n   FROM pg_stat_activity \n   WHERE state = 'idle' AND state_change < NOW() - INTERVAL '1 hour';\n4. 长期解决方案：\n   - 增加 max_connections 配置（需要重启）\n   - 使用连接池（PgBouncer, Pgpool-II）\n   - 优化应用连接管理\n\n相关关键词：max_connections, too many clients, connection pool, pgbouncer\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "error",
+      "connections",
+      "max_connections",
+      "pgbouncer",
+      "FAQ"
+    ],
+    "id": "KB-036",
+    "category": "postgres_errors"
+  },
+  {
+    "title": "PostgreSQL 错误：No space left on device - 常见问题解答",
+    "content": "错误信息：\ncould not extend file \"...\": No space left on device\nHINT: Free up disk space or scale up storage.\n\n原因：\n数据库服务器的磁盘空间已满。\n\n修复方法：\n1. 检查磁盘使用情况：df -h\n2. 查找大文件和大表：\n   SELECT pg_size_pretty(pg_total_relation_size(relid)) AS size,\n          relname\n   FROM pg_stat_user_tables\n   ORDER BY pg_total_relation_size(relid) DESC\n   LIMIT 10;\n3. 清理空间：\n   - 删除不需要的表：DROP TABLE ...\n   - 清理 WAL 日志（确保归档正常）\n   - VACUUM FULL 回收空间（注意：会锁表）\n4. 扩容：增加磁盘空间\n5. 预防：\n   - 设置磁盘空间监控告警\n   - 定期清理临时表和过期数据\n   - 配置表空间管理\n\n相关关键词：disk full, no space left, storage, disk space, vacuum\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "error",
+      "disk",
+      "storage",
+      "space",
+      "FAQ"
+    ],
+    "id": "KB-037",
+    "category": "postgres_errors"
+  },
+  {
+    "title": "PostgreSQL 错误：connection timed out - 常见问题解答",
+    "content": "错误信息：\ncould not connect to server: Connection timed out\nIs the server running on host \"hostname\" and accepting TCP/IP connections on port 5432?\n\n原因：\n客户端无法连接到 PostgreSQL 服务器。可能的原因：\n1. 数据库服务器未运行\n2. 网络不通（防火墙、安全组）\n3. 端口配置错误\n4. listen_addresses 配置限制\n\n修复方法：\n1. 检查数据库服务是否运行：\n   systemctl status postgresql\n2. 测试网络连通性：\n   ping hostname\n   telnet hostname 5432\n3. 检查防火墙和安全组设置\n4. 检查 postgresql.conf 中的 listen_addresses\n5. 检查 pg_hba.conf 中的访问控制\n\n相关关键词：connection refused, timeout, network, firewall, listen_addresses\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "error",
+      "connection",
+      "network",
+      "timeout",
+      "FAQ"
+    ],
+    "id": "KB-038",
+    "category": "postgres_errors"
+  },
+  {
+    "title": "PostgreSQL 错误：could not serialize access due to concurrent update - 常见问题解答",
+    "content": "错误信息：\ncould not serialize access due to concurrent update\nDETAIL:  Reason code: N.\nHINT: The transaction might succeed if retried.\n\n原因：\n多个事务同时修改同一行数据，导致序列化失败。\n常见于可串行化隔离级别或高并发写入场景。\n\n修复方法：\n1. 应用层实现重试逻辑\n2. 降低隔离级别（如从 SERIALIZABLE 降到 READ COMMITTED）\n3. 优化更新顺序，避免死锁\n4. 使用 SELECT ... FOR UPDATE 显式加锁\n5. 减少事务大小，缩短持锁时间\n6. 使用 ON CONFLICT 处理 UPSERT 场景\n\n相关关键词：concurrent update, serialization, isolation level, lock, retry\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "error",
+      "concurrency",
+      "isolation",
+      "lock",
+      "FAQ"
+    ],
+    "id": "KB-039",
+    "category": "postgres_errors"
+  },
+  {
+    "title": "dbt tests 概览 - 常见问题解答",
+    "content": "dbt 内置了多种数据质量测试：\n\n1. unique: 验证列值唯一\n   - 配置方式：在 schema.yml 中添加 tests: [unique]\n   - 失败原因：数据中有重复值\n\n2. not_null: 验证列不为空\n   - 配置方式：在 schema.yml 中添加 tests: [not_null]\n   - 失败原因：数据中有 NULL 值\n\n3. accepted_values: 验证列值在指定范围内\n   - 配置方式：tests: [{accepted_values: {values: ['a', 'b', 'c']}}]\n   - 失败原因：列值不在指定列表中\n\n4. relationships: 验证外键关系\n   - 配置方式：tests: [{relationships: {to: ref('other_model'), field: id}}]\n   - 失败原因：外键值在父表中不存在\n\n运行测试：\n- dbt test: 运行所有测试\n- dbt test --select model_name: 运行指定模型的测试\n- dbt test --store-failures: 将失败的测试结果保存到表中\n\n相关关键词：dbt test, data quality, unique, not_null, schema.yml\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "testing",
+      "data quality",
+      "schema.yml",
+      "tests",
+      "FAQ"
+    ],
+    "id": "KB-040",
+    "category": "data_quality"
+  },
+  {
+    "title": "唯一约束和主键约束的区别 - 常见问题解答",
+    "content": "PostgreSQL 中唯一约束和主键约束的区别：\n\n主键约束（PRIMARY KEY）：\n- 自动创建唯一索引\n- 列值不允许为 NULL\n- 一个表只能有一个主键\n- 自动成为聚簇索引（InnoDB 中）\n\n唯一约束（UNIQUE）：\n- 自动创建唯一索引\n- 列值允许为 NULL（且多个 NULL 不违反唯一性）\n- 一个表可以有多个唯一约束\n- 可以作为外键的引用目标\n\n在 dbt 中：\n- unique test 对应唯一约束\n- 可以同时使用 unique 和 not_null 模拟主键约束\n\n常见问题：\n1. 主键冲突：重复插入相同主键值\n2. NULL 值问题：唯一约束允许多个 NULL\n3. 性能：唯一索引会影响写入性能\n\n相关关键词：primary key, unique constraint, index, NULL, duplicate\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "constraint",
+      "primary key",
+      "unique",
+      "index",
+      "FAQ"
+    ],
+    "id": "KB-041",
+    "category": "data_quality"
+  },
+  {
+    "title": "数据去重最佳实践 - 常见问题解答",
+    "content": "SQL 中常见的去重方法：\n\n方法 1: DISTINCT\nSELECT DISTINCT col1, col2 FROM table;\n适用于整行去重。\n\n方法 2: row_number() 窗口函数\nSELECT * FROM (\n    SELECT *,\n        row_number() OVER (\n            PARTITION BY key_col \n            ORDER BY created_at DESC\n        ) as rn\n    FROM table\n) WHERE rn = 1;\n适用于按某列去重，保留最新记录。\n\n方法 3: GROUP BY\nSELECT col1, col2, max(created_at) \nFROM table \nGROUP BY col1, col2;\n适用于聚合统计。\n\n方法 4: EXISTS / NOT EXISTS\nSELECT t1.* FROM table t1\nWHERE NOT EXISTS (\n    SELECT 1 FROM table t2 \n    WHERE t2.key = t1.key AND t2.id > t1.id\n);\n适用于保留最大 ID 的记录。\n\n在 dbt 中的应用：\n- staging 层通常需要去重\n- 使用 row_number() 控制去重逻辑\n- 配合 dbt test unique 验证去重效果\n\n相关关键词：deduplication, distinct, row_number, group by, duplicate data\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "sql",
+      "deduplication",
+      "data quality",
+      "window function",
+      "FAQ"
+    ],
+    "id": "KB-042",
+    "category": "data_quality"
+  },
+  {
+    "title": "dbt 性能优化指南 - 常见问题解答",
+    "content": "dbt 项目性能优化建议：\n\n1. 使用增量模型（incremental）\n   - 只处理新增/变更数据\n   - 适合大数据量表\n   - 配置 unique_key 用于去重\n\n2. 增加并发线程数\n   - dbt run --threads 8\n   - 根据数据库承载能力调整\n\n3. 优化 SQL 查询\n   - 避免 SELECT *\n   - 尽早过滤数据\n   - 使用合适的 JOIN 顺序\n   - 添加合适的索引\n\n4. 模型分层设计\n   - staging 层：轻量转换\n   - intermediate 层：业务逻辑\n   - marts 层：最终报表\n   - 避免在一个模型中做太多事情\n\n5. 使用 materialized view\n   - 适合频繁查询的大表\n   - 自动刷新策略\n\n6. 分区表\n   - 大表按时间分区\n   - 查询时自动裁剪分区\n\n相关关键词：performance, optimization, incremental, tuning, speed\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "dbt",
+      "performance",
+      "optimization",
+      "incremental",
+      "tuning",
+      "FAQ"
+    ],
+    "id": "KB-043",
+    "category": "performance"
+  },
+  {
+    "title": "PostgreSQL 查询性能优化 - 常见问题解答",
+    "content": "PostgreSQL 查询性能优化常用方法：\n\n1. 索引优化\n   - 为 WHERE、JOIN、ORDER BY 列创建索引\n   - 使用 EXPLAIN ANALYZE 分析执行计划\n   - 考虑复合索引\n\n2. 查询重写\n   - 避免在索引列上使用函数\n   - 使用 EXISTS 替代 IN\n   - 避免 SELECT *\n   - 尽早过滤数据\n\n3. 统计信息\n   - 运行 ANALYZE 更新统计信息\n   - 调整 default_statistics_target\n\n4. 配置参数\n   - work_mem: 排序和哈希操作的内存\n   - shared_buffers: 共享缓冲区大小\n   - effective_cache_size: 优化器估计缓存大小\n   - maintenance_work_mem: 维护操作内存\n\n5. 连接配置\n   - 使用连接池减少连接开销\n   - 调整 max_connections\n\n6. 监控工具\n   - pg_stat_statements: 慢查询分析\n   - EXPLAIN ANALYZE: 执行计划分析\n   - pg_stat_activity: 活动会话监控\n\n相关关键词：query optimization, index, explain, performance tuning, postgresql\n\nFAQ:\nQ: 这个问题常见吗？\nA: 是的，这是一个常见错误。\nQ: 修复需要多长时间？\nA: 通常 5-10 分钟即可修复。",
+    "tags": [
+      "postgres",
+      "performance",
+      "index",
+      "explain",
+      "optimization",
+      "FAQ"
+    ],
+    "id": "KB-044",
+    "category": "performance"
+  },
+  {
+    "title": "dbt_project.yml materialized 配置说明 - 详细步骤",
+    "content": "在 dbt_project.yml 中，可以为不同目录的模型指定默认的 materialization 方式。\n支持的 materialized 类型包括：\n- table: 每次运行都重建表（CREATE OR REPLACE TABLE AS）\n- view: 每次运行都重建视图（CREATE OR REPLACE VIEW AS）\n- incremental: 增量构建，只处理新增或变更的数据\n- ephemeral: 临时 CTE，不物化到数据库\n- materialized_view: 物化视图（需要数据库支持）\n\n示例配置：\nmodels:\n  my_project:\n    staging:\n      +materialized: view\n    marts:\n      +materialized: table\n      finance:\n        +materialized: incremental\n\n常见错误：materialized 拼写错误（如 'tabel', 'veiw', 'incrementl'）会导致编译失败。\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "configuration",
+      "materialization",
+      "dbt_project.yml",
+      "troubleshooting"
+    ],
+    "id": "KB-045",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt profiles.yml 配置详解 - 详细步骤",
+    "content": "profiles.yml 是 dbt 的连接配置文件，定义了如何连接到数据仓库。\n文件位置通常在 ~/.dbt/profiles.yml 或项目根目录。\n\n基本结构：\nmy_profile:\n  target: dev\n  outputs:\n    dev:\n      type: postgres\n      host: localhost\n      user: my_user\n      password: my_password\n      port: 5432\n      dbname: my_db\n      schema: dbt_dev\n      threads: 4\n\n关键参数：\n- schema: dbt 创建的所有对象将放在此 schema 下\n- threads: 并行运行的模型数量\n- target: 当前激活的环境\n\n常见问题：\n1. schema 配置错误导致找不到源表\n2. 密码错误导致连接失败\n3. 端口配置不正确\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "configuration",
+      "profiles.yml",
+      "connection",
+      "troubleshooting"
+    ],
+    "id": "KB-046",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt packages.yml 依赖管理 - 详细步骤",
+    "content": "dbt 使用 packages.yml 管理外部包依赖。\n\n示例：\npackages:\n  - package: dbt-labs/dbt_utils\n    version: 1.1.0\n  - package: dbt-labs/codegen\n    version: 0.12.1\n  - package: calogica/dbt_expectations\n    version: 0.10.0\n\n常用命令：\n- dbt deps: 安装 packages.yml 中定义的所有包\n- dbt clean: 清理 dbt_packages 目录\n\n常见错误：\n1. 包名拼写错误：dbt-labs/dbt_utils 才是正确的\n2. 版本号不存在：请去 dbt Hub 确认最新版本\n3. 版本不兼容：包版本需要与 dbt 版本匹配\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "packages",
+      "dependencies",
+      "dbt deps",
+      "troubleshooting"
+    ],
+    "id": "KB-047",
+    "category": "dbt_configuration"
+  },
+  {
+    "title": "dbt 编译错误：Invalid materialization - 详细步骤",
+    "content": "错误信息：\nCompilation Error\n  Invalid materialization 'xxx' specified for model 'yyy'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n原因：\ndbt_project.yml 或模型文件的 config 块中指定了无效的 materialization 值。\n通常是拼写错误导致的，例如：\n- 'tabel' 应为 'table'\n- 'veiw' 应为 'view'\n- 'incrementl' 应为 'incremental'\n\n修复方法：\n1. 检查 dbt_project.yml 中的 materialized 配置\n2. 检查模型文件顶部的 {{ config(materialized='...') }}\n3. 修正拼写错误\n4. 运行 dbt parse 验证\n\n相关关键词：materialized, compilation error, invalid, dbt_project.yml, config\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "error",
+      "compilation",
+      "materialized",
+      "spelling",
+      "troubleshooting"
+    ],
+    "id": "KB-048",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 数据库错误：relation does not exist - 详细步骤",
+    "content": "错误信息：\nDatabase Error in model xxx (models/yyy.sql)\n  relation \"schema.table\" does not exist\n  LINE N: from schema.table\n\n原因：\nSQL 查询引用了不存在的表或视图。可能的原因：\n1. 源表名称拼写错误\n2. schema 配置不正确\n3. 上游模型尚未运行\n4. 表被删除或重命名\n\n修复方法：\n1. 确认表名拼写是否正确\n2. 检查 profiles.yml 中的 schema 配置\n3. 确保上游模型已经成功运行\n4. 检查 source.yml 中的源定义是否正确\n5. 运行 dbt ls 查看项目中的所有模型\n\n相关关键词：relation does not exist, table not found, schema, source, database error\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "error",
+      "database",
+      "table not found",
+      "relation",
+      "troubleshooting"
+    ],
+    "id": "KB-049",
+    "category": "dbt_errors"
+  },
+  {
+    "title": "dbt 数据库错误：permission denied - 详细步骤",
+    "content": "错误信息：\nDatabase Error in model xxx\n  permission denied for relation table_name\n  LINE N: from schema.table_name\n\n原因：\ndbt 使用的数据库用户没有足够的权限访问源表或执行操作。\n\n修复方法：\n1. 确认 dbt profile 中配置的数据库用户名\n2. 授予必要的权限：\n   - 对源表的 SELECT 权限\n   - 对目标 schema 的 CREATE 和 USAGE 权限\n   - 对已有表的 INSERT/UPDATE/DELETE 权限\n\nSQL 示例：\nGRANT USAGE ON SCHEMA raw TO dbt_user;\nGRANT SELECT ON ALL TABLES IN SCHEMA raw TO dbt_user;\nALTER DEFAULT PRIVILEGES IN SCHEMA raw GRANT SELECT ON TABLES TO dbt_user;\n\n相关关键词：permission denied, access denied, grant, privileges, database user\n\n详细排查步骤：\n1. 首先确认错误信息\n2. 检查相关配置\n3. 定位根本原因\n4. 执行修复操作\n5. 验证修复结果",
+    "tags": [
+      "dbt",
+      "error",
+      "permission",
+      "grant",
+      "access denied",
+      "troubleshooting"
+    ],
+    "id": "KB-050",
+    "category": "dbt_errors"
+  }
+]

@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: customers
+        columns:
+          - name: customer_id
+            tests:
+              - unique
+              - not_null
+      - name: orders
+        columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            tests:
+              - relationships:
+                  to: source('raw', 'customers')
+                  field: customer_id
+      - name: products
+        columns:
+          - name: product_id
+            tests:
+              - unique
+              - not_null
+      - name: order_items
+        columns:
+          - name: order_item_id
+            tests:
+              - unique
+              - not_null

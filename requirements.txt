@@ -1,0 +1,41 @@
+# DORA - Python Dependencies
+# DORA: Error-Aware RAG for DataOps Fault Diagnosis
+
+# Core LLM API
+openai>=1.3.0
+httpx>=0.25.0
+
+# Configuration
+pyyaml>=6.0.1
+python-dotenv>=1.0.0
+
+# Vector Database
+chromadb>=0.4.18
+
+# Embedding & Reranking Models
+sentence-transformers>=2.2.2
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Logging & Utilities
+loguru>=0.7.2
+tqdm>=4.66.0
+
+# JSON Schema Validation
+jsonschema>=4.20.0
+
+# ===== Optional Dependencies =====
+# Uncomment as needed
+
+# Docker environment experiments
+# docker>=7.0.0
+
+# PostgreSQL database connection
+# psycopg2-binary>=2.9.9
+# sqlalchemy>=2.0.0
+
+# Visualization (for analysis scripts)
+# matplotlib>=3.8.0
+# seaborn>=0.13.0

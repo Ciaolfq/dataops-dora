@@ -1,0 +1,341 @@
+{
+  "description": "DORA Fault Injection Dataset - 100 Realistic Data Pipeline Faults",
+  "version": "1.0",
+  "total_faults": 100,
+  "categories": {
+    "Definition": 35,
+    "Data": 35,
+    "Execution": 30
+  },
+  "faults": [
+    {
+      "fault_id": "DEF-01",
+      "category": "Definition",
+      "subcategory": "Config",
+      "title": "Invalid materialized value in dbt_project.yml",
+      "description": "Typo in materialized configuration causes compilation error",
+      "injection_type": "file_modify",
+      "target_file": "dbt_project.yml",
+      "injection": "Change materialized: 'table' to materialized: 'tabel' in models config",
+      "expected_error_pattern": "not a valid value for materialized",
+      "root_cause_label": "DEF_CONFIG_MATERIALIZED",
+      "difficulty": 1,
+      "fix_steps": [
+        "Correct the typo 'tabel' to 'table' in dbt_project.yml",
+        "Run dbt compile to verify the fix",
+        "Re-run the failed dbt task"
+      ]
+    },
+    {
+      "fault_id": "DEF-02",
+      "category": "Definition",
+      "subcategory": "Config",
+      "title": "Undefined variable in dbt model",
+      "description": "Using a var() that is not defined in dbt_project.yml",
+      "injection_type": "file_modify",
+      "target_file": "models/staging/stg_orders.sql",
+      "injection": "Add where order_date >= '{{ var('start_date') }}' but don't define start_date",
+      "expected_error_pattern": "var.*not defined|undefined variable",
+      "root_cause_label": "DEF_CONFIG_VAR",
+      "difficulty": 1,
+      "fix_steps": [
+        "Add the missing variable to the vars section in dbt_project.yml",
+        "Alternatively pass the variable via --vars command line argument",
+        "Verify the variable name spelling"
+      ]
+    },
+    {
+      "fault_id": "DEF-03",
+      "category": "Definition",
+      "subcategory": "Syntax",
+      "title": "Calling non-existent PostgreSQL function",
+      "description": "SQL query references a function that doesn't exist in the database",
+      "injection_type": "file_modify",
+      "target_file": "models/marts/fct_order_summary.sql",
+      "injection": "Add to_date_nonexistent(order_date) function call",
+      "expected_error_pattern": "function.*does not exist",
+      "root_cause_label": "DEF_SYNTAX_FUNCTION",
+      "difficulty": 2,
+      "fix_steps": [
+        "Check if the function exists in the database",
+        "Create the missing function or use an alternative built-in function",
+        "Verify function name and argument types match"
+      ]
+    },
+    {
+      "fault_id": "DEF-04",
+      "category": "Definition",
+      "subcategory": "Syntax",
+      "title": "SQL syntax error - missing comma",
+      "description": "Missing comma in SELECT clause causes parse error",
+      "injection_type": "file_modify",
+      "target_file": "models/staging/stg_customers.sql",
+      "injection": "Remove comma between first_name and last_name columns",
+      "expected_error_pattern": "syntax error|parse error",
+      "root_cause_label": "DEF_SYNTAX_SQL",
+      "difficulty": 1,
+      "fix_steps": [
+        "Review SQL syntax near the error position",
+        "Add missing comma between column names",
+        "Test the query with dbt compile"
+      ]
+    },
+    {
+      "fault_id": "DEF-05",
+      "category": "Definition",
+      "subcategory": "Dependency",
+      "title": "ref() to non-existent model",
+      "description": "Model references another model that doesn't exist",
+      "injection_type": "file_modify",
+      "target_file": "models/marts/dim_customers.sql",
+      "injection": "Change ref('stg_orders') to ref('stg_order_history')",
+      "expected_error_pattern": "model.*not found|could not find model",
+      "root_cause_label": "DEF_DEP_REF",
+      "difficulty": 1,
+      "fix_steps": [
+        "Check if the referenced model exists in the project",
+        "Correct the model name in the ref() call",
+        "Ensure the model is enabled and in the correct directory"
+      ]
+    },
+    {
+      "fault_id": "DEF-06",
+      "category": "Definition",
+      "subcategory": "Config",
+      "title": "Invalid schema.yml test configuration",
+      "description": "Schema test has invalid YAML syntax",
+      "injection_type": "file_modify",
+      "target_file": "models/staging/schema.yml",
+      "injection": "Add bad YAML indentation in tests section",
+      "expected_error_pattern": "Invalid config|YAML|syntax",
+      "root_cause_label": "DEF_CONFIG_YAML",
+      "difficulty": 2,
+      "fix_steps": [
+        "Fix YAML indentation in schema.yml",
+        "Validate YAML syntax with a linter",
+        "Run dbt compile to verify"
+      ]
+    },
+    {
+      "fault_id": "DEF-07",
+      "category": "Definition",
+      "subcategory": "Syntax",
+      "title": "Misspelled SQL keyword",
+      "description": "SELECT misspelled as SELCT causes parse error",
+      "injection_type": "file_modify",
+      "target_file": "models/staging/stg_products.sql",
+      "injection": "Change SELECT to SELCT",
+      "expected_error_pattern": "syntax error|parse error",
+      "root_cause_label": "DEF_SYNTAX_SQL",
+      "difficulty": 1,
+      "fix_steps": [
+        "Fix the misspelled SQL keyword",
+        "Review query for other typos",
+        "Run dbt compile to verify"
+      ]
+    },
+    {
+      "fault_id": "DEF-08",
+      "category": "Definition",
+      "subcategory": "Dependency",
+      "title": "Circular dependency between models",
+      "description": "Two models reference each other creating a cycle",
+      "injection_type": "file_modify",
+      "target_file": "models/staging/stg_orders.sql",
+      "injection": "Add a ref('fct_order_summary') to stg_orders creating a cycle",
+      "expected_error_pattern": "circular|cycle.*detect",
+      "root_cause_label": "DEF_DEP_CIRCULAR",
+      "difficulty": 3,
+      "fix_steps": [
+        "Identify the circular dependency chain using dbt docs",
+        "Refactor models to break the cycle",
+        "Consider using ephemeral models or intermediate tables"
+      ]
+    },
+    {
+      "fault_id": "DAT-01",
+      "category": "Data",
+      "subcategory": "Schema",
+      "title": "Source column dropped - schema drift",
+      "description": "Upstream source table removed a column used by dbt model",
+      "injection_type": "database_modify",
+      "target": "raw.customers",
+      "injection": "Drop email column from raw.customers table",
+      "expected_error_pattern": "column.*does not exist|unknown column",
+      "root_cause_label": "DATA_SCHEMA_COLUMN",
+      "difficulty": 2,
+      "fix_steps": [
+        "Update the dbt model to not reference the dropped column",
+        "Add schema tests to detect future column changes",
+        "Coordinate with source system owners for change management"
+      ]
+    },
+    {
+      "fault_id": "DAT-02",
+      "category": "Data",
+      "subcategory": "Type",
+      "title": "Data type mismatch in join condition",
+      "description": "Joining on columns of different data types",
+      "injection_type": "database_modify",
+      "target": "raw.orders",
+      "injection": "Change customer_id column type from INT to VARCHAR",
+      "expected_error_pattern": "cannot cast|type.*mismatch|invalid input syntax",
+      "root_cause_label": "DATA_TYPE_CAST",
+      "difficulty": 2,
+      "fix_steps": [
+        "Add explicit type casting in the join condition",
+        "Use customer_id::INT or CAST(customer_id AS INT)",
+        "Align data types across source and target tables"
+      ]
+    },
+    {
+      "fault_id": "DAT-03",
+      "category": "Data",
+      "subcategory": "Quality",
+      "title": "Duplicate key violation on incremental model",
+      "description": "Incremental model produces duplicate primary keys",
+      "injection_type": "database_modify",
+      "target": "raw.orders",
+      "injection": "Insert duplicate order_id into source table",
+      "expected_error_pattern": "duplicate key|unique constraint",
+      "root_cause_label": "DATA_QUALITY_UNIQUE",
+      "difficulty": 2,
+      "fix_steps": [
+        "Add deduplication logic using row_number() or DISTINCT",
+        "Check source data for duplicate records",
+        "Use on_schema_change=sync_all_columns properly for incremental"
+      ]
+    },
+    {
+      "fault_id": "DAT-04",
+      "category": "Data",
+      "subcategory": "Quality",
+      "title": "Foreign key violation in test",
+      "description": "dbt relationship test fails due to orphaned records",
+      "injection_type": "database_modify",
+      "target": "raw.orders",
+      "injection": "Insert order with customer_id=9999 (non-existent customer)",
+      "expected_error_pattern": "foreign key|referential integrity|relationship test",
+      "root_cause_label": "DATA_QUALITY_FK",
+      "difficulty": 2,
+      "fix_steps": [
+        "Identify orphaned records in the source data",
+        "Add referential integrity tests to catch issues early",
+        "Clean up bad data or handle orphans in the model"
+      ]
+    },
+    {
+      "fault_id": "DAT-05",
+      "category": "Data",
+      "subcategory": "Quality",
+      "title": "NULL value in NOT NULL column",
+      "description": "Source data contains NULL in a column marked not_null in dbt tests",
+      "injection_type": "database_modify",
+      "target": "raw.customers",
+      "injection": "Insert customer with NULL email",
+      "expected_error_pattern": "not.*null|notnull|NULL value",
+      "root_cause_label": "DATA_QUALITY_NOTNULL",
+      "difficulty": 1,
+      "fix_steps": [
+        "Use COALESCE to handle NULL values in the model",
+        "Add not_null dbt test to detect issues early",
+        "Investigate why source has NULL values"
+      ]
+    },
+    {
+      "fault_id": "EXE-01",
+      "category": "Execution",
+      "subcategory": "Permission",
+      "title": "Insufficient database permissions",
+      "description": "dbt user lacks permission to create tables in schema",
+      "injection_type": "database_modify",
+      "target": "dbt_user permissions",
+      "injection": "Revoke CREATE privilege on staging schema",
+      "expected_error_pattern": "permission denied|insufficient privilege|42501",
+      "root_cause_label": "EXE_PERM_DENIED",
+      "difficulty": 1,
+      "fix_steps": [
+        "Grant CREATE and USAGE privileges on the schema",
+        "Grant SELECT, INSERT, UPDATE, DELETE on tables",
+        "Verify permissions with information_schema queries"
+      ]
+    },
+    {
+      "fault_id": "EXE-02",
+      "category": "Execution",
+      "subcategory": "Performance",
+      "title": "Query timeout on large table",
+      "description": "dbt model exceeds statement timeout during full refresh",
+      "injection_type": "config_modify",
+      "target": "postgres config",
+      "injection": "Set statement_timeout to 1s",
+      "expected_error_pattern": "timeout|canceling statement",
+      "root_cause_label": "EXE_PERF_TIMEOUT",
+      "difficulty": 2,
+      "fix_steps": [
+        "Increase statement_timeout for long-running queries",
+        "Add indexes on frequently filtered/joined columns",
+        "Use incremental models for large tables",
+        "Optimize query with EXPLAIN ANALYZE"
+      ]
+    },
+    {
+      "fault_id": "EXE-03",
+      "category": "Execution",
+      "subcategory": "Concurrency",
+      "title": "Deadlock between concurrent dbt runs",
+      "description": "Two dbt jobs running concurrently deadlock on table access",
+      "injection_type": "concurrency_test",
+      "target": "multiple dbt runs",
+      "injection": "Run two dbt jobs that access tables in opposite order",
+      "expected_error_pattern": "deadlock|deadlock detected",
+      "root_cause_label": "EXE_CONC_DEADLOCK",
+      "difficulty": 3,
+      "fix_steps": [
+        "Ensure consistent table access order across models",
+        "Use lower isolation level if acceptable",
+        "Add retry logic for deadlock errors",
+        "Serialize conflicting dbt jobs in Airflow"
+      ]
+    },
+    {
+      "fault_id": "EXE-04",
+      "category": "Execution",
+      "subcategory": "Resource",
+      "title": "Disk full - no space left",
+      "description": "Database runs out of disk space during large dbt run",
+      "injection_type": "resource_limit",
+      "target": "postgres disk",
+      "injection": "Fill up disk space with temp tables",
+      "expected_error_pattern": "no space left|disk full",
+      "root_cause_label": "EXE_RES_DISK",
+      "difficulty": 2,
+      "fix_steps": [
+        "Clean up old data and temporary tables",
+        "Run VACUUM to reclaim storage space",
+        "Increase disk space or add additional storage",
+        "Monitor disk usage and set up alerts"
+      ]
+    },
+    {
+      "fault_id": "EXE-05",
+      "category": "Execution",
+      "subcategory": "Dependency",
+      "title": "Database connection refused",
+      "description": "dbt cannot connect to PostgreSQL database",
+      "injection_type": "infrastructure",
+      "target": "postgres service",
+      "injection": "Stop PostgreSQL service temporarily",
+      "expected_error_pattern": "connection refused|could not connect",
+      "root_cause_label": "EXE_DEP_CONNECTION",
+      "difficulty": 2,
+      "fix_steps": [
+        "Verify database host and port configuration",
+        "Check if the database server is running",
+        "Verify network connectivity and firewall rules",
+        "Check for connection pool exhaustion"
+      ]
+    }
+  ],
+  "note": "This is a sample of 20 fault definitions. The full 100-fault dataset is generated programmatically."
+}

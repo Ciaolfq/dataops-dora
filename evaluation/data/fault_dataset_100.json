@@ -1,0 +1,1784 @@
+[
+  {
+    "fault_id": "FAULT-001",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "Running with dbt=1.7.0\nEncountered an error:\nCompilation Error\n  Invalid materialization 'tabel' specified for model 'fct_orders'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model fct_orders (models/marts/fct_orders.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-002",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "Running with dbt=1.6.2\nEncountered an error:\nCompilation Error\n  Invalid materialization 'veiw' specified for model 'dim_customers'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model dim_customers (models/marts/dim_customers.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-003",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "Running with dbt=1.8.0\nEncountered an error:\nCompilation Error\n  Invalid materialization 'incrementl' specified for model 'fct_events'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model fct_events (models/marts/fct_events.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-004",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "Running with dbt=1.7.3\nEncountered an error:\nCompilation Error\n  Invalid materialization 'ephermal' specified for model 'stg_orders'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model stg_orders (models/marts/stg_orders.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-005",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "profiles.yml 中 schema 配置错误",
+    "error_log": "Running with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  relation \"analytics.stg_orders\" does not exist\n  LINE 4: from analytics.stg_customers\n\n  > in model stg_orders (models/staging/stg_orders.sql)",
+    "root_cause": "profiles.yml 中配置的 schema 名称与实际数据库中的 schema 不匹配。",
+    "fix_steps": [
+      "检查 profiles.yml 中 target.schema 配置",
+      "确认数据库中实际存在的 schema 名称",
+      "修正 schema 配置为正确的值",
+      "运行 dbt debug 测试数据库连接",
+      "重新执行 dbt run 验证"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-006",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "profiles.yml 中 schema 配置错误",
+    "error_log": "Running with dbt=1.6.0\nEncountered an error:\nDatabase Error\n  relation \"dwh.stg_products\" does not exist\n  LINE 4: from dwh.products_raw\n\n  > in model stg_products (models/staging/stg_products.sql)",
+    "root_cause": "profiles.yml 中配置的 schema 名称与实际数据库中的 schema 不匹配。",
+    "fix_steps": [
+      "检查 profiles.yml 中 target.schema 配置",
+      "确认数据库中实际存在的 schema 名称",
+      "修正 schema 配置为正确的值",
+      "运行 dbt debug 测试数据库连接",
+      "重新执行 dbt run 验证"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-007",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "Airflow DAG 环境变量配置缺失",
+    "error_log": "Broken DAG: [/opt/airflow/dags/data_pipeline.py] No such file or directory: '/opt/airflow/dags/dbt_project'\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/data_pipeline.py\", line 15, in <module>\n    DBT_PROJECT_DIR = os.environ['DBT_PROJECT_DIR']\n  File \"/usr/lib/python3.9/os.py\", line 679, in __getitem__\n    raise KeyError(key) from None\nKeyError: 'DBT_PROJECT_DIR'",
+    "root_cause": "Airflow DAG 文件引用了未配置的环境变量，导致 DAG 加载失败。",
+    "fix_steps": [
+      "检查 docker-compose.yml 或 airflow.cfg 中的环境变量配置",
+      "添加缺失的环境变量",
+      "重启 Airflow webserver 和 scheduler",
+      "在 Airflow UI 中验证 DAG 是否已正确加载"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-008",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "Airflow DAG 环境变量配置缺失",
+    "error_log": "Broken DAG: [/opt/airflow/dags/etl_pipeline.py] No such file or directory: '/opt/airflow/config'\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/etl_pipeline.py\", line 22, in <module>\n    CONFIG_PATH = os.environ['AIRFLOW_CONFIG_PATH']\n  File \"/usr/lib/python3.9/os.py\", line 679, in __getitem__\n    raise KeyError(key) from None\nKeyError: 'AIRFLOW_CONFIG_PATH'",
+    "root_cause": "Airflow DAG 文件引用了未配置的环境变量，导致 DAG 加载失败。",
+    "fix_steps": [
+      "检查 docker-compose.yml 或 airflow.cfg 中的环境变量配置",
+      "添加缺失的环境变量",
+      "重启 Airflow webserver 和 scheduler",
+      "在 Airflow UI 中验证 DAG 是否已正确加载"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-009",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nEncountered an error:\nCompilation Error\n  Invalid materialization 'tabel' specified for model 'fct_orders'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model fct_orders (models/marts/fct_orders.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-010",
+    "category": "configuration_error",
+    "subcategory": "Config/Settings",
+    "title": "dbt_project.yml 中 materialized 拼写错误",
+    "error_log": "(Environment: production)\nRunning with dbt=1.6.2\nEncountered an error:\nCompilation Error\n  Invalid materialization 'veiw' specified for model 'dim_customers'.\n  Valid materializations are: table, view, incremental, ephemeral, materialized_view.\n\n  > in model dim_customers (models/marts/dim_customers.sql)",
+    "root_cause": "dbt_project.yml 配置文件中 materialized 参数拼写错误。",
+    "fix_steps": [
+      "打开 dbt_project.yml 配置文件",
+      "定位到模型配置节中的 materialized 设置",
+      "修正 materialized 参数拼写",
+      "运行 dbt parse 验证语法正确性",
+      "重新执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-011",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "Running with dbt=1.5.0\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.7.0, but you are using 1.5.0.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-012",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "Running with dbt=1.4.6\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.6.0, but you are using 1.4.6.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-013",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "Running with dbt=1.3.2\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.5.0, but you are using 1.3.2.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-014",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "Python 模块缺失",
+    "error_log": "[2024-01-15 10:23:45,123] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/data_pipeline.py\", line 45, in run_dbt\n    from dbt.main import main\nImportError: cannot import name 'main' from 'dbt.main'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/data_pipeline.py\", line 48, in run_dbt\n    import dbt\nModuleNotFoundError: No module named 'dbt'",
+    "root_cause": "Airflow worker 环境中未安装所需的 Python 包。",
+    "fix_steps": [
+      "检查 Airflow worker 的 Python 环境",
+      "运行 pip install 安装缺失的包",
+      "如果使用 Docker，更新 Dockerfile 添加依赖",
+      "重新构建并部署 Airflow 镜像"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-015",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "Python 模块缺失",
+    "error_log": "[2024-01-15 10:23:45,123] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/analytics.py\", line 45, in run_report\n    from pandas.main import main\nImportError: cannot import name 'main' from 'pandas.main'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/analytics.py\", line 48, in run_report\n    import pandas\nModuleNotFoundError: No module named 'pandas'",
+    "root_cause": "Airflow worker 环境中未安装所需的 Python 包。",
+    "fix_steps": [
+      "检查 Airflow worker 的 Python 环境",
+      "运行 pip install 安装缺失的包",
+      "如果使用 Docker，更新 Dockerfile 添加依赖",
+      "重新构建并部署 Airflow 镜像"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-016",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "(Environment: development)\nRunning with dbt=1.5.0\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.7.0, but you are using 1.5.0.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-017",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "(Environment: production)\nRunning with dbt=1.4.6\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.6.0, but you are using 1.4.6.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-018",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "dbt 版本不兼容",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.3.2\nEncountered an error:\nRuntime Error\n  This version of dbt is not compatible with the project.\n  The project requires dbt version >=1.5.0, but you are using 1.3.2.\n  To fix this, upgrade your dbt version or modify the require-dbt-version\n  config in dbt_project.yml.",
+    "root_cause": "当前环境安装的 dbt 版本低于项目要求的最低版本。",
+    "fix_steps": [
+      "运行 dbt --version 检查当前 dbt 版本",
+      "使用 pip install --upgrade dbt-postgres 升级 dbt 版本",
+      "或修改 dbt_project.yml 中的 require-dbt-version 配置",
+      "重新运行 dbt run 验证兼容性"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-019",
+    "category": "dependency_issue",
+    "subcategory": "Package Version",
+    "title": "Python 模块缺失",
+    "error_log": "(Environment: development)\n[2024-01-15 10:23:45,123] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/data_pipeline.py\", line 45, in run_dbt\n    from dbt.main import main\nImportError: cannot import name 'main' from 'dbt.main'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/data_pipeline.py\", line 48, in run_dbt\n    import dbt\nModuleNotFoundError: No module named 'dbt'",
+    "root_cause": "Airflow worker 环境中未安装所需的 Python 包。",
+    "fix_steps": [
+      "检查 Airflow worker 的 Python 环境",
+      "运行 pip install 安装缺失的包",
+      "如果使用 Docker，更新 Dockerfile 添加依赖",
+      "重新构建并部署 Airflow 镜像"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-020",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  permission denied for relation customers\n  LINE 5: from raw.customers\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-021",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  permission denied for relation order_items\n  LINE 5: from raw.order_items\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-022",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "Running with dbt=1.8.0\nDatabase Error in model stg_products (models/staging/stg_products.sql)\n  permission denied for relation inventory\n  LINE 5: from public.inventory\n\n  compiled Code at target/run/dbt_project/models/staging/stg_products.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-023",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "Airflow Connection 认证失败",
+    "error_log": "[2024-01-15 10:30:00,456] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/plugins/snowflake_hook.py\", line 89, in get_conn\n    conn = snowflake.connector.connect(\n  File \"/usr/lib/python3.9/site-packages/snowflake/connector/connection.py\", line 110, in Connect\n    return SnowflakeConnection(**kwargs)\nsnowflake.connector.errors.DatabaseError: 250001 (08001):\nFailed to connect to DB: Authentication failed.\nUsername and/or password incorrect.",
+    "root_cause": "Airflow Connection 中配置的数据库用户名或密码错误。",
+    "fix_steps": [
+      "在 Airflow UI 中进入 Admin -> Connections",
+      "找到对应的 Connection 并编辑",
+      "验证 Login 和 Password 配置是否正确",
+      "使用 Test 按钮测试连接",
+      "重新触发失败的 DAG Task"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-024",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  permission denied for relation customers\n  LINE 5: from raw.customers\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-025",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.2\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  permission denied for relation order_items\n  LINE 5: from raw.order_items\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-026",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "(Environment: production)\nRunning with dbt=1.8.0\nDatabase Error in model stg_products (models/staging/stg_products.sql)\n  permission denied for relation inventory\n  LINE 5: from public.inventory\n\n  compiled Code at target/run/dbt_project/models/staging/stg_products.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-027",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "Airflow Connection 认证失败",
+    "error_log": "(Environment: staging)\n[2024-01-15 10:30:00,456] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/plugins/snowflake_hook.py\", line 89, in get_conn\n    conn = snowflake.connector.connect(\n  File \"/usr/lib/python3.9/site-packages/snowflake/connector/connection.py\", line 110, in Connect\n    return SnowflakeConnection(**kwargs)\nsnowflake.connector.errors.DatabaseError: 250001 (08001):\nFailed to connect to DB: Authentication failed.\nUsername and/or password incorrect.",
+    "root_cause": "Airflow Connection 中配置的数据库用户名或密码错误。",
+    "fix_steps": [
+      "在 Airflow UI 中进入 Admin -> Connections",
+      "找到对应的 Connection 并编辑",
+      "验证 Login 和 Password 配置是否正确",
+      "使用 Test 按钮测试连接",
+      "重新触发失败的 DAG Task"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-028",
+    "category": "permission_error",
+    "subcategory": "Database Access",
+    "title": "数据库表权限不足",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  permission denied for relation customers\n  LINE 5: from raw.customers\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "dbt 使用的数据库用户缺少对源表的 SELECT 权限。",
+    "fix_steps": [
+      "确认 dbt profile 中配置的数据库用户名",
+      "联系 DBA 授予该用户对 schema 的 SELECT 权限",
+      "执行 GRANT SELECT ON ALL TABLES IN SCHEMA ... TO dbt_user;",
+      "验证权限: dbt run --select model_name"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-029",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 语法错误 - 缺少逗号",
+    "error_log": "Running with dbt=1.7.0\nCompilation Error in model stg_orders (models/staging/stg_orders.sql)\n  syntax error at or near \"from\"\n  LINE 8:   from raw.orders\n\n  compiled Code at target/compiled/dbt_project/models/staging/stg_orders.sql\n\n  select\n      order_id\n      customer_id\n      order_date\n      status\n    from raw.orders",
+    "root_cause": "SQL SELECT 语句中列定义之间缺少逗号分隔符。",
+    "fix_steps": [
+      "打开模型 SQL 文件",
+      "检查 SELECT 子句中的列定义",
+      "在列名后添加逗号分隔符",
+      "运行 dbt parse 验证 SQL 语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-030",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 语法错误 - 缺少逗号",
+    "error_log": "Running with dbt=1.6.0\nCompilation Error in model stg_customers (models/staging/stg_customers.sql)\n  syntax error at or near \"from\"\n  LINE 10:   from raw.customers\n\n  compiled Code at target/compiled/dbt_project/models/staging/stg_customers.sql\n\n  select\n      customer_id\n      first_name\n      last_name\n      email\n    from raw.customers",
+    "root_cause": "SQL SELECT 语句中列定义之间缺少逗号分隔符。",
+    "fix_steps": [
+      "打开模型 SQL 文件",
+      "检查 SELECT 子句中的列定义",
+      "在列名后添加逗号分隔符",
+      "运行 dbt parse 验证 SQL 语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-031",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 函数不存在",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model fct_order_summary (models/marts/fct_order_summary.sql)\n  function non_existent_func(integer) does not exist\n  LINE 10:   non_existent_func(total_amount) as result_amount\n\n  HINT: No function matches the given name and argument types.\n  You might need to add explicit type casts.",
+    "root_cause": "SQL 查询中调用了 PostgreSQL 中不存在的函数。",
+    "fix_steps": [
+      "检查模型 SQL 中的函数调用",
+      "查阅 PostgreSQL 文档确认正确的函数名",
+      "将错误函数替换为正确的 SQL 表达式或内置函数",
+      "运行 dbt parse 验证语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-032",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 函数不存在",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error in model fct_sales (models/marts/fct_sales.sql)\n  function calculate_tax(numeric) does not exist\n  LINE 10:   calculate_tax(subtotal) as result_amount\n\n  HINT: No function matches the given name and argument types.\n  You might need to add explicit type casts.",
+    "root_cause": "SQL 查询中调用了 PostgreSQL 中不存在的函数。",
+    "fix_steps": [
+      "检查模型 SQL 中的函数调用",
+      "查阅 PostgreSQL 文档确认正确的函数名",
+      "将错误函数替换为正确的 SQL 表达式或内置函数",
+      "运行 dbt parse 验证语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-033",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 语法错误 - 缺少逗号",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nCompilation Error in model stg_orders (models/staging/stg_orders.sql)\n  syntax error at or near \"from\"\n  LINE 8:   from raw.orders\n\n  compiled Code at target/compiled/dbt_project/models/staging/stg_orders.sql\n\n  select\n      order_id\n      customer_id\n      order_date\n      status\n    from raw.orders",
+    "root_cause": "SQL SELECT 语句中列定义之间缺少逗号分隔符。",
+    "fix_steps": [
+      "打开模型 SQL 文件",
+      "检查 SELECT 子句中的列定义",
+      "在列名后添加逗号分隔符",
+      "运行 dbt parse 验证 SQL 语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-034",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 语法错误 - 缺少逗号",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.0\nCompilation Error in model stg_customers (models/staging/stg_customers.sql)\n  syntax error at or near \"from\"\n  LINE 10:   from raw.customers\n\n  compiled Code at target/compiled/dbt_project/models/staging/stg_customers.sql\n\n  select\n      customer_id\n      first_name\n      last_name\n      email\n    from raw.customers",
+    "root_cause": "SQL SELECT 语句中列定义之间缺少逗号分隔符。",
+    "fix_steps": [
+      "打开模型 SQL 文件",
+      "检查 SELECT 子句中的列定义",
+      "在列名后添加逗号分隔符",
+      "运行 dbt parse 验证 SQL 语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-035",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 函数不存在",
+    "error_log": "(Environment: production)\nRunning with dbt=1.7.0\nDatabase Error in model fct_order_summary (models/marts/fct_order_summary.sql)\n  function non_existent_func(integer) does not exist\n  LINE 10:   non_existent_func(total_amount) as result_amount\n\n  HINT: No function matches the given name and argument types.\n  You might need to add explicit type casts.",
+    "root_cause": "SQL 查询中调用了 PostgreSQL 中不存在的函数。",
+    "fix_steps": [
+      "检查模型 SQL 中的函数调用",
+      "查阅 PostgreSQL 文档确认正确的函数名",
+      "将错误函数替换为正确的 SQL 表达式或内置函数",
+      "运行 dbt parse 验证语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-036",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 函数不存在",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.6.2\nDatabase Error in model fct_sales (models/marts/fct_sales.sql)\n  function calculate_tax(numeric) does not exist\n  LINE 10:   calculate_tax(subtotal) as result_amount\n\n  HINT: No function matches the given name and argument types.\n  You might need to add explicit type casts.",
+    "root_cause": "SQL 查询中调用了 PostgreSQL 中不存在的函数。",
+    "fix_steps": [
+      "检查模型 SQL 中的函数调用",
+      "查阅 PostgreSQL 文档确认正确的函数名",
+      "将错误函数替换为正确的 SQL 表达式或内置函数",
+      "运行 dbt parse 验证语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-037",
+    "category": "syntax_error",
+    "subcategory": "SQL Syntax",
+    "title": "SQL 语法错误 - 缺少逗号",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nCompilation Error in model stg_orders (models/staging/stg_orders.sql)\n  syntax error at or near \"from\"\n  LINE 8:   from raw.orders\n\n  compiled Code at target/compiled/dbt_project/models/staging/stg_orders.sql\n\n  select\n      order_id\n      customer_id\n      order_date\n      status\n    from raw.orders",
+    "root_cause": "SQL SELECT 语句中列定义之间缺少逗号分隔符。",
+    "fix_steps": [
+      "打开模型 SQL 文件",
+      "检查 SELECT 子句中的列定义",
+      "在列名后添加逗号分隔符",
+      "运行 dbt parse 验证 SQL 语法",
+      "执行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-038",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "Running with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"db.example.com\" (10.0.1.100)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-039",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "Running with dbt=1.6.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"postgres.internal\" (192.168.1.50)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-040",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "SSL 连接失败",
+    "error_log": "Running with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  connection to server at \"db.example.com\", port 5432 failed: SSL error: sslv3 alert handshake failure\n  FATAL:  no pg_hba.conf entry for host \"10.0.2.100\", user \"dbt_user\", database \"analytics\", SSL off",
+    "root_cause": "数据库要求 SSL 连接但客户端未启用 SSL，或 SSL 证书配置错误。",
+    "fix_steps": [
+      "检查 profiles.yml 中的 SSL 配置",
+      "确认是否需要启用 SSL",
+      "添加 sslmode: require 到 profile 配置",
+      "确保客户端有正确的 SSL 证书",
+      "运行 dbt debug 测试连接"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-041",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "(Environment: production)\nRunning with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"db.example.com\" (10.0.1.100)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-042",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.6.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"postgres.internal\" (192.168.1.50)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-043",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "SSL 连接失败",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  connection to server at \"db.example.com\", port 5432 failed: SSL error: sslv3 alert handshake failure\n  FATAL:  no pg_hba.conf entry for host \"10.0.2.100\", user \"dbt_user\", database \"analytics\", SSL off",
+    "root_cause": "数据库要求 SSL 连接但客户端未启用 SSL，或 SSL 证书配置错误。",
+    "fix_steps": [
+      "检查 profiles.yml 中的 SSL 配置",
+      "确认是否需要启用 SSL",
+      "添加 sslmode: require 到 profile 配置",
+      "确保客户端有正确的 SSL 证书",
+      "运行 dbt debug 测试连接"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-044",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "(Environment: production)\nRunning with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"db.example.com\" (10.0.1.100)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-045",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "数据库连接超时",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.6.0\nEncountered an error:\nDatabase Error\n  could not connect to server: Connection timed out\n        Is the server running on host \"postgres.internal\" (192.168.1.50)\n        and accepting TCP/IP connections on port 5432?",
+    "root_cause": "dbt 无法连接到数据库服务器，可能是网络不通、数据库未启动或防火墙阻止了连接。",
+    "fix_steps": [
+      "检查数据库服务器是否正常运行",
+      "使用 ping 或 telnet 测试网络连通性",
+      "确认数据库端口是否开放",
+      "检查防火墙和安全组设置",
+      "验证 profiles.yml 中的 host 和 port 配置"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-046",
+    "category": "network_issue",
+    "subcategory": "Connection",
+    "title": "SSL 连接失败",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nEncountered an error:\nDatabase Error\n  connection to server at \"db.example.com\", port 5432 failed: SSL error: sslv3 alert handshake failure\n  FATAL:  no pg_hba.conf entry for host \"10.0.2.100\", user \"dbt_user\", database \"analytics\", SSL off",
+    "root_cause": "数据库要求 SSL 连接但客户端未启用 SSL，或 SSL 证书配置错误。",
+    "fix_steps": [
+      "检查 profiles.yml 中的 SSL 配置",
+      "确认是否需要启用 SSL",
+      "添加 sslmode: require 到 profile 配置",
+      "确保客户端有正确的 SSL 证书",
+      "运行 dbt debug 测试连接"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-047",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "PostgreSQL 连接数耗尽",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error\n  FATAL:  sorry, too many clients already\n  DETAIL:  Connection count exceeds max_connections limit (100).\n\n  HINT:  Wait for other connections to close, or increase max_connections.",
+    "root_cause": "PostgreSQL 数据库连接数已达到 max_connections 配置上限。",
+    "fix_steps": [
+      "查看当前连接数: SELECT count(*) FROM pg_stat_activity;",
+      "检查是否有连接泄漏（应用未正确关闭连接）",
+      "短期解决方案：终止空闲连接",
+      "长期解决方案：增加 max_connections 配置或使用连接池",
+      "考虑使用 PgBouncer 连接池管理连接"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-048",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "PostgreSQL 连接数耗尽",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error\n  FATAL:  sorry, too many clients already\n  DETAIL:  Connection count exceeds max_connections limit (50).\n\n  HINT:  Wait for other connections to close, or increase max_connections.",
+    "root_cause": "PostgreSQL 数据库连接数已达到 max_connections 配置上限。",
+    "fix_steps": [
+      "查看当前连接数: SELECT count(*) FROM pg_stat_activity;",
+      "检查是否有连接泄漏（应用未正确关闭连接）",
+      "短期解决方案：终止空闲连接",
+      "长期解决方案：增加 max_connections 配置或使用连接池",
+      "考虑使用 PgBouncer 连接池管理连接"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-049",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "磁盘空间不足",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model fct_orders (models/marts/fct_orders.sql)\n  could not extend file \"base/16384/12345.6\": No space left on device\n  HINT: Free up disk space or scale up storage.",
+    "root_cause": "数据库服务器磁盘空间已满，无法写入数据。",
+    "fix_steps": [
+      "检查磁盘使用情况：df -h",
+      "清理临时文件和过期的 WAL 日志",
+      "运行 VACUUM FULL 回收空间",
+      "删除不需要的表或旧数据",
+      "扩容磁盘空间或迁移到更大的存储"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-050",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "磁盘空间不足",
+    "error_log": "Running with dbt=1.6.0\nDatabase Error in model fct_events (models/marts/fct_events.sql)\n  could not extend file \"base/16384/54321.3\": No space left on device\n  HINT: Free up disk space or scale up storage.",
+    "root_cause": "数据库服务器磁盘空间已满，无法写入数据。",
+    "fix_steps": [
+      "检查磁盘使用情况：df -h",
+      "清理临时文件和过期的 WAL 日志",
+      "运行 VACUUM FULL 回收空间",
+      "删除不需要的表或旧数据",
+      "扩容磁盘空间或迁移到更大的存储"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-051",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "PostgreSQL 连接数耗尽",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nDatabase Error\n  FATAL:  sorry, too many clients already\n  DETAIL:  Connection count exceeds max_connections limit (100).\n\n  HINT:  Wait for other connections to close, or increase max_connections.",
+    "root_cause": "PostgreSQL 数据库连接数已达到 max_connections 配置上限。",
+    "fix_steps": [
+      "查看当前连接数: SELECT count(*) FROM pg_stat_activity;",
+      "检查是否有连接泄漏（应用未正确关闭连接）",
+      "短期解决方案：终止空闲连接",
+      "长期解决方案：增加 max_connections 配置或使用连接池",
+      "考虑使用 PgBouncer 连接池管理连接"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-052",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "PostgreSQL 连接数耗尽",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.2\nDatabase Error\n  FATAL:  sorry, too many clients already\n  DETAIL:  Connection count exceeds max_connections limit (50).\n\n  HINT:  Wait for other connections to close, or increase max_connections.",
+    "root_cause": "PostgreSQL 数据库连接数已达到 max_connections 配置上限。",
+    "fix_steps": [
+      "查看当前连接数: SELECT count(*) FROM pg_stat_activity;",
+      "检查是否有连接泄漏（应用未正确关闭连接）",
+      "短期解决方案：终止空闲连接",
+      "长期解决方案：增加 max_connections 配置或使用连接池",
+      "考虑使用 PgBouncer 连接池管理连接"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-053",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "磁盘空间不足",
+    "error_log": "(Environment: production)\nRunning with dbt=1.7.0\nDatabase Error in model fct_orders (models/marts/fct_orders.sql)\n  could not extend file \"base/16384/12345.6\": No space left on device\n  HINT: Free up disk space or scale up storage.",
+    "root_cause": "数据库服务器磁盘空间已满，无法写入数据。",
+    "fix_steps": [
+      "检查磁盘使用情况：df -h",
+      "清理临时文件和过期的 WAL 日志",
+      "运行 VACUUM FULL 回收空间",
+      "删除不需要的表或旧数据",
+      "扩容磁盘空间或迁移到更大的存储"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-054",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "磁盘空间不足",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.6.0\nDatabase Error in model fct_events (models/marts/fct_events.sql)\n  could not extend file \"base/16384/54321.3\": No space left on device\n  HINT: Free up disk space or scale up storage.",
+    "root_cause": "数据库服务器磁盘空间已满，无法写入数据。",
+    "fix_steps": [
+      "检查磁盘使用情况：df -h",
+      "清理临时文件和过期的 WAL 日志",
+      "运行 VACUUM FULL 回收空间",
+      "删除不需要的表或旧数据",
+      "扩容磁盘空间或迁移到更大的存储"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-055",
+    "category": "resource_exhaustion",
+    "subcategory": "Memory/Disk",
+    "title": "PostgreSQL 连接数耗尽",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nDatabase Error\n  FATAL:  sorry, too many clients already\n  DETAIL:  Connection count exceeds max_connections limit (100).\n\n  HINT:  Wait for other connections to close, or increase max_connections.",
+    "root_cause": "PostgreSQL 数据库连接数已达到 max_connections 配置上限。",
+    "fix_steps": [
+      "查看当前连接数: SELECT count(*) FROM pg_stat_activity;",
+      "检查是否有连接泄漏（应用未正确关闭连接）",
+      "短期解决方案：终止空闲连接",
+      "长期解决方案：增加 max_connections 配置或使用连接池",
+      "考虑使用 PgBouncer 连接池管理连接"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-056",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "唯一约束违反",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  duplicate key value violates unique constraint \"stg_customers_pkey\"\n  DETAIL:  Key (customer_id)=(12345) already exists.\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "插入数据时违反主键唯一约束，存在重复的键值。",
+    "fix_steps": [
+      "检查源数据中是否存在重复的键值",
+      "运行查询查找重复值",
+      "在模型中添加去重逻辑（使用 row_number() 或 distinct）",
+      "如果源数据问题，通知上游系统修复",
+      "重新运行 dbt run 验证"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-057",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "唯一约束违反",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  duplicate key value violates unique constraint \"stg_orders_pkey\"\n  DETAIL:  Key (order_id)=(98765) already exists.\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "插入数据时违反主键唯一约束，存在重复的键值。",
+    "fix_steps": [
+      "检查源数据中是否存在重复的键值",
+      "运行查询查找重复值",
+      "在模型中添加去重逻辑（使用 row_number() 或 distinct）",
+      "如果源数据问题，通知上游系统修复",
+      "重新运行 dbt run 验证"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-058",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "唯一约束违反",
+    "error_log": "Running with dbt=1.8.0\nDatabase Error in model stg_products (models/staging/stg_products.sql)\n  duplicate key value violates unique constraint \"stg_products_sku_key\"\n  DETAIL:  Key (sku)=(PROD-001) already exists.\n\n  compiled Code at target/run/dbt_project/models/staging/stg_products.sql",
+    "root_cause": "插入数据时违反主键唯一约束，存在重复的键值。",
+    "fix_steps": [
+      "检查源数据中是否存在重复的键值",
+      "运行查询查找重复值",
+      "在模型中添加去重逻辑（使用 row_number() 或 distinct）",
+      "如果源数据问题，通知上游系统修复",
+      "重新运行 dbt run 验证"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-059",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "外键约束违反",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model fct_orders (models/marts/fct_orders.sql)\n  insert or update on table \"fct_orders\" violates foreign key constraint \"fct_orders_customer_id_fkey\"\n  DETAIL:  Key (customer_id)=(99999) is not present in table \"dim_customers\".",
+    "root_cause": "事实表中的外键值在维度表中不存在，违反外键约束。",
+    "fix_steps": [
+      "检查源数据中是否有孤立的外键值",
+      "确认数据加载顺序是否正确（先加载维度表，再加载事实表）",
+      "在事实表模型中添加过滤，排除不存在的外键值",
+      "修复上游数据完整性问题",
+      "重新运行 dbt run --full-refresh 验证"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-060",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "外键约束违反",
+    "error_log": "Running with dbt=1.6.0\nDatabase Error in model fct_sales (models/marts/fct_sales.sql)\n  insert or update on table \"fct_sales\" violates foreign key constraint \"fct_sales_product_id_fkey\"\n  DETAIL:  Key (product_id)=(INVALID-001) is not present in table \"dim_products\".",
+    "root_cause": "事实表中的外键值在维度表中不存在，违反外键约束。",
+    "fix_steps": [
+      "检查源数据中是否有孤立的外键值",
+      "确认数据加载顺序是否正确（先加载维度表，再加载事实表）",
+      "在事实表模型中添加过滤，排除不存在的外键值",
+      "修复上游数据完整性问题",
+      "重新运行 dbt run --full-refresh 验证"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-061",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "dbt unique 测试失败",
+    "error_log": "Running with dbt=1.7.0\nFailure in test unique_stg_customers_customer_id (models/schema.yml)\n  Got 2 results, expected 0.\n\n  compiled Code at target/compiled/dbt_project/models/schema.yml/unique_stg_customers_customer_id.sql\n\n  select\n      customer_id\n  from (\n      select\n          customer_id,\n          count(*) as n_records\n      from {{ ref('stg_customers') }}\n      group by 1\n  ) as validation_errors\n  where n_records > 1",
+    "root_cause": "模型中的某列存在重复值，违反 dbt unique 测试约束。",
+    "fix_steps": [
+      "查看重复的列值",
+      "检查源数据是否存在重复记录",
+      "在模型中添加去重逻辑",
+      "或在 schema.yml 中调整测试的严重级别",
+      "修复后运行 dbt test 验证"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-062",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "dbt unique 测试失败",
+    "error_log": "Running with dbt=1.6.2\nFailure in test unique_stg_orders_order_id (models/schema.yml)\n  Got 3 results, expected 0.\n\n  compiled Code at target/compiled/dbt_project/models/schema.yml/unique_stg_orders_order_id.sql\n\n  select\n      order_id\n  from (\n      select\n          order_id,\n          count(*) as n_records\n      from {{ ref('stg_orders') }}\n      group by 1\n  ) as validation_errors\n  where n_records > 1",
+    "root_cause": "模型中的某列存在重复值，违反 dbt unique 测试约束。",
+    "fix_steps": [
+      "查看重复的列值",
+      "检查源数据是否存在重复记录",
+      "在模型中添加去重逻辑",
+      "或在 schema.yml 中调整测试的严重级别",
+      "修复后运行 dbt test 验证"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-063",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "唯一约束违反",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  duplicate key value violates unique constraint \"stg_customers_pkey\"\n  DETAIL:  Key (customer_id)=(12345) already exists.\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "插入数据时违反主键唯一约束，存在重复的键值。",
+    "fix_steps": [
+      "检查源数据中是否存在重复的键值",
+      "运行查询查找重复值",
+      "在模型中添加去重逻辑（使用 row_number() 或 distinct）",
+      "如果源数据问题，通知上游系统修复",
+      "重新运行 dbt run 验证"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-064",
+    "category": "data_quality",
+    "subcategory": "Constraints",
+    "title": "唯一约束违反",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.2\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  duplicate key value violates unique constraint \"stg_orders_pkey\"\n  DETAIL:  Key (order_id)=(98765) already exists.\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "插入数据时违反主键唯一约束，存在重复的键值。",
+    "fix_steps": [
+      "检查源数据中是否存在重复的键值",
+      "运行查询查找重复值",
+      "在模型中添加去重逻辑（使用 row_number() 或 distinct）",
+      "如果源数据问题，通知上游系统修复",
+      "重新运行 dbt run 验证"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-065",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  relation \"raw.orders_table\" does not exist\n  LINE 7: from raw.orders_table\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-066",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "Running with dbt=1.6.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  relation \"raw.customer_data\" does not exist\n  LINE 7: from raw.customer_data\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-067",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "Running with dbt=1.8.0\nDatabase Error in model stg_products (models/staging/stg_products.sql)\n  relation \"public.product_inventory\" does not exist\n  LINE 7: from public.product_inventory\n\n  compiled Code at target/run/dbt_project/models/staging/stg_products.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-068",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "列不存在",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  column \"customer_email\" does not exist\n  LINE 4:   customer_email\n\n  Where: SQL statement \"select ... from raw.customers\"\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "SQL 查询引用了不存在的列，上游 schema 已变更。",
+    "fix_steps": [
+      "检查表的实际列结构",
+      "确认列是否已被重命名或删除",
+      "修正模型中的列引用",
+      "如果列被重命名，更新为新的列名",
+      "运行 dbt run 验证修复"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-069",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "列不存在",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  column \"order_total\" does not exist\n  LINE 4:   order_total\n\n  Where: SQL statement \"select ... from raw.orders\"\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "SQL 查询引用了不存在的列，上游 schema 已变更。",
+    "fix_steps": [
+      "检查表的实际列结构",
+      "确认列是否已被重命名或删除",
+      "修正模型中的列引用",
+      "如果列被重命名，更新为新的列名",
+      "运行 dbt run 验证修复"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-070",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nDatabase Error in model stg_orders (models/staging/stg_orders.sql)\n  relation \"raw.orders_table\" does not exist\n  LINE 7: from raw.orders_table\n\n  compiled Code at target/run/dbt_project/models/staging/stg_orders.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-071",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "(Environment: production)\nRunning with dbt=1.6.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  relation \"raw.customer_data\" does not exist\n  LINE 7: from raw.customer_data\n\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-072",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "表不存在",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.8.0\nDatabase Error in model stg_products (models/staging/stg_products.sql)\n  relation \"public.product_inventory\" does not exist\n  LINE 7: from public.product_inventory\n\n  compiled Code at target/run/dbt_project/models/staging/stg_products.sql",
+    "root_cause": "SQL 查询引用的表在数据库中不存在。",
+    "fix_steps": [
+      "检查数据库中 schema 下的所有表",
+      "确认正确的表名",
+      "修正 SQL 查询中的表名",
+      "检查 source.yml 中的表名配置是否正确",
+      "运行 dbt run --select model 验证修复"
+    ],
+    "severity": "high",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-073",
+    "category": "schema_mismatch",
+    "subcategory": "Column/Table",
+    "title": "列不存在",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nDatabase Error in model stg_customers (models/staging/stg_customers.sql)\n  column \"customer_email\" does not exist\n  LINE 4:   customer_email\n\n  Where: SQL statement \"select ... from raw.customers\"\n  compiled Code at target/run/dbt_project/models/staging/stg_customers.sql",
+    "root_cause": "SQL 查询引用了不存在的列，上游 schema 已变更。",
+    "fix_steps": [
+      "检查表的实际列结构",
+      "确认列是否已被重命名或删除",
+      "修正模型中的列引用",
+      "如果列被重命名，更新为新的列名",
+      "运行 dbt run 验证修复"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-074",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow Scheduler 心跳丢失",
+    "error_log": "The scheduler does not appear to be running.\nLast heartbeat was received 45 minutes ago.\n\nDAGs may not be scheduled properly until the scheduler is restarted.\n\nCheck the scheduler logs for more details.\n\nScheduler: airflow-scheduler-0\nLast Heartbeat: 2024-01-15 09:15:00 UTC\nHost: airflow-scheduler-0",
+    "root_cause": "Airflow Scheduler 进程崩溃或失去心跳，DAG 无法正常调度。",
+    "fix_steps": [
+      "检查 Scheduler 进程状态",
+      "查看 Scheduler 日志排查崩溃原因",
+      "重启 Scheduler 服务",
+      "检查数据库连接是否正常",
+      "确认资源是否充足（内存、CPU）"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-075",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow Scheduler 心跳丢失",
+    "error_log": "The scheduler does not appear to be running.\nLast heartbeat was received 1 hour 30 minutes ago.\n\nDAGs may not be scheduled properly until the scheduler is restarted.\n\nCheck the scheduler logs for more details.\n\nScheduler: airflow-scheduler-0\nLast Heartbeat: 2024-01-15 08:30:00 UTC\nHost: airflow-scheduler-1",
+    "root_cause": "Airflow Scheduler 进程崩溃或失去心跳，DAG 无法正常调度。",
+    "fix_steps": [
+      "检查 Scheduler 进程状态",
+      "查看 Scheduler 日志排查崩溃原因",
+      "重启 Scheduler 服务",
+      "检查数据库连接是否正常",
+      "确认资源是否充足（内存、CPU）"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-076",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow DAG Task 运行超时",
+    "error_log": "[2024-01-15 11:00:00,789] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/operators/dbt_operator.py\", line 67, in execute\n    result = self._run_command()\n  File \"/opt/airflow/operators/dbt_operator.py\", line 89, in _run_command\n    raise AirflowException(f\"{command} timed out after {self.timeout}s\")\nairflow.exceptions.AirflowException: dbt command timed out after 3600s",
+    "root_cause": "Task 运行时间超过 Airflow Task 设置的超时时间。",
+    "fix_steps": [
+      "检查运行时间长的原因（大数据量、复杂查询等）",
+      "考虑优化 SQL 查询（添加索引、减少全表扫描）",
+      "适当增加 Task 的 timeout 配置",
+      "使用增量模型替代全量构建",
+      "增加 worker 资源"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-077",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow DAG Task 运行超时",
+    "error_log": "[2024-01-15 11:00:00,789] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/operators/bash_operator.py\", line 67, in execute\n    result = self._run_command()\n  File \"/opt/airflow/operators/bash_operator.py\", line 89, in _run_command\n    raise AirflowException(f\"{command} timed out after {self.timeout}s\")\nairflow.exceptions.AirflowException: bash command timed out after 7200s",
+    "root_cause": "Task 运行时间超过 Airflow Task 设置的超时时间。",
+    "fix_steps": [
+      "检查运行时间长的原因（大数据量、复杂查询等）",
+      "考虑优化 SQL 查询（添加索引、减少全表扫描）",
+      "适当增加 Task 的 timeout 配置",
+      "使用增量模型替代全量构建",
+      "增加 worker 资源"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-078",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "dbt 内存不足",
+    "error_log": "Running with dbt=1.7.0\nKilled\nsignal: killed (dbt process was terminated by the system)\n\nThis usually indicates the process ran out of memory (OOM killer).\nConsider reducing the number of threads or running on a machine with more memory.\n\nCurrent threads: 8",
+    "root_cause": "dbt 进程因内存不足被系统 OOM Killer 终止。",
+    "fix_steps": [
+      "检查系统内存使用情况",
+      "减少 dbt 运行时的线程数（--threads 参数）",
+      "分批运行 dbt 模型",
+      "增加系统内存或使用更大的实例",
+      "优化大模型，使用增量构建"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-079",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "dbt 内存不足",
+    "error_log": "Running with dbt=1.6.2\nKilled\nsignal: killed (dbt process was terminated by the system)\n\nThis usually indicates the process ran out of memory (OOM killer).\nConsider reducing the number of threads or running on a machine with more memory.\n\nCurrent threads: 16",
+    "root_cause": "dbt 进程因内存不足被系统 OOM Killer 终止。",
+    "fix_steps": [
+      "检查系统内存使用情况",
+      "减少 dbt 运行时的线程数（--threads 参数）",
+      "分批运行 dbt 模型",
+      "增加系统内存或使用更大的实例",
+      "优化大模型，使用增量构建"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-080",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow Scheduler 心跳丢失",
+    "error_log": "(Environment: production)\nThe scheduler does not appear to be running.\nLast heartbeat was received 45 minutes ago.\n\nDAGs may not be scheduled properly until the scheduler is restarted.\n\nCheck the scheduler logs for more details.\n\nScheduler: airflow-scheduler-0\nLast Heartbeat: 2024-01-15 09:15:00 UTC\nHost: airflow-scheduler-0",
+    "root_cause": "Airflow Scheduler 进程崩溃或失去心跳，DAG 无法正常调度。",
+    "fix_steps": [
+      "检查 Scheduler 进程状态",
+      "查看 Scheduler 日志排查崩溃原因",
+      "重启 Scheduler 服务",
+      "检查数据库连接是否正常",
+      "确认资源是否充足（内存、CPU）"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-081",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow Scheduler 心跳丢失",
+    "error_log": "(Environment: staging)\nThe scheduler does not appear to be running.\nLast heartbeat was received 1 hour 30 minutes ago.\n\nDAGs may not be scheduled properly until the scheduler is restarted.\n\nCheck the scheduler logs for more details.\n\nScheduler: airflow-scheduler-0\nLast Heartbeat: 2024-01-15 08:30:00 UTC\nHost: airflow-scheduler-1",
+    "root_cause": "Airflow Scheduler 进程崩溃或失去心跳，DAG 无法正常调度。",
+    "fix_steps": [
+      "检查 Scheduler 进程状态",
+      "查看 Scheduler 日志排查崩溃原因",
+      "重启 Scheduler 服务",
+      "检查数据库连接是否正常",
+      "确认资源是否充足（内存、CPU）"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-082",
+    "category": "runtime_error",
+    "subcategory": "Scheduler/Task",
+    "title": "Airflow DAG Task 运行超时",
+    "error_log": "(Environment: development)\n[2024-01-15 11:00:00,789] {taskinstance.py:1851} ERROR - Task failed with exception\nTraceback (most recent call last):\n  File \"/opt/airflow/operators/dbt_operator.py\", line 67, in execute\n    result = self._run_command()\n  File \"/opt/airflow/operators/dbt_operator.py\", line 89, in _run_command\n    raise AirflowException(f\"{command} timed out after {self.timeout}s\")\nairflow.exceptions.AirflowException: dbt command timed out after 3600s",
+    "root_cause": "Task 运行时间超过 Airflow Task 设置的超时时间。",
+    "fix_steps": [
+      "检查运行时间长的原因（大数据量、复杂查询等）",
+      "考虑优化 SQL 查询（添加索引、减少全表扫描）",
+      "适当增加 Task 的 timeout 配置",
+      "使用增量模型替代全量构建",
+      "增加 worker 资源"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-083",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "PostgreSQL 死锁",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model fct_order_summary (models/marts/fct_order_summary.sql)\n  deadlock detected\n  DETAIL:  Process 12345 waits for AccessExclusiveLock on relation 67890 of database 54321;\n  blocked by process 12346.\n  Process 12346 waits for AccessExclusiveLock on relation 67891 of database 54321;\n  blocked by process 12345.\n  HINT:  See server log for query details.\n  CONTEXT:  SQL statement \"TRUNCATE TABLE fct_order_summary\".",
+    "root_cause": "两个 dbt 任务并发运行，同时尝试操作对方依赖的表，导致数据库死锁。",
+    "fix_steps": [
+      "检查是否有多个 dbt 任务同时写入同一张表",
+      "在 dbt 模型中配置 incremental materialization 避免 TRUNCATE",
+      "调整 DAG 调度时间，避免相关模型并发执行",
+      "使用 Airflow Pool 限制并发任务数",
+      "考虑使用事务隔离级别或行级锁"
+    ],
+    "severity": "medium",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-084",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "PostgreSQL 死锁",
+    "error_log": "Running with dbt=1.6.0\nDatabase Error in model fct_sales (models/marts/fct_sales.sql)\n  deadlock detected\n  DETAIL:  Process 54321 waits for ShareLock on relation 12345 of database 12345;\n  blocked by process 54322.\n  Process 54322 waits for AccessExclusiveLock on relation 12346 of database 12345;\n  blocked by process 54321.\n  HINT:  See server log for query details.\n  CONTEXT:  SQL statement \"TRUNCATE TABLE fct_sales\".",
+    "root_cause": "两个 dbt 任务并发运行，同时尝试操作对方依赖的表，导致数据库死锁。",
+    "fix_steps": [
+      "检查是否有多个 dbt 任务同时写入同一张表",
+      "在 dbt 模型中配置 incremental materialization 避免 TRUNCATE",
+      "调整 DAG 调度时间，避免相关模型并发执行",
+      "使用 Airflow Pool 限制并发任务数",
+      "考虑使用事务隔离级别或行级锁"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-085",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "dbt 并发写入冲突",
+    "error_log": "Running with dbt=1.7.0\nDatabase Error in model fct_events (models/fct_events.sql)\n  could not serialize access due to concurrent update\n  DETAIL:  Reason code: 7.\n  HINT: The transaction might succeed if retried.\n\n  This can happen when multiple dbt processes are modifying the same table simultaneously.\n  Try reducing concurrency or use incremental models.",
+    "root_cause": "多个 dbt 进程同时修改同一张表，导致并发更新冲突。",
+    "fix_steps": [
+      "检查是否有多个 dbt run 同时运行",
+      "减少 dbt 运行的并发数（--threads）",
+      "使用增量模型（incremental）减少写入冲突",
+      "调整 DAG 调度避免同时运行相关模型",
+      "使用 Airflow Pool 控制并发"
+    ],
+    "severity": "medium",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-086",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "dbt 并发写入冲突",
+    "error_log": "Running with dbt=1.6.2\nDatabase Error in model dim_products (models/dim_products.sql)\n  could not serialize access due to concurrent update\n  DETAIL:  Reason code: 12.\n  HINT: The transaction might succeed if retried.\n\n  This can happen when multiple dbt processes are modifying the same table simultaneously.\n  Try reducing concurrency or use incremental models.",
+    "root_cause": "多个 dbt 进程同时修改同一张表，导致并发更新冲突。",
+    "fix_steps": [
+      "检查是否有多个 dbt run 同时运行",
+      "减少 dbt 运行的并发数（--threads）",
+      "使用增量模型（incremental）减少写入冲突",
+      "调整 DAG 调度避免同时运行相关模型",
+      "使用 Airflow Pool 控制并发"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-087",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "PostgreSQL 死锁",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nDatabase Error in model fct_order_summary (models/marts/fct_order_summary.sql)\n  deadlock detected\n  DETAIL:  Process 12345 waits for AccessExclusiveLock on relation 67890 of database 54321;\n  blocked by process 12346.\n  Process 12346 waits for AccessExclusiveLock on relation 67891 of database 54321;\n  blocked by process 12345.\n  HINT:  See server log for query details.\n  CONTEXT:  SQL statement \"TRUNCATE TABLE fct_order_summary\".",
+    "root_cause": "两个 dbt 任务并发运行，同时尝试操作对方依赖的表，导致数据库死锁。",
+    "fix_steps": [
+      "检查是否有多个 dbt 任务同时写入同一张表",
+      "在 dbt 模型中配置 incremental materialization 避免 TRUNCATE",
+      "调整 DAG 调度时间，避免相关模型并发执行",
+      "使用 Airflow Pool 限制并发任务数",
+      "考虑使用事务隔离级别或行级锁"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-088",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "PostgreSQL 死锁",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.0\nDatabase Error in model fct_sales (models/marts/fct_sales.sql)\n  deadlock detected\n  DETAIL:  Process 54321 waits for ShareLock on relation 12345 of database 12345;\n  blocked by process 54322.\n  Process 54322 waits for AccessExclusiveLock on relation 12346 of database 12345;\n  blocked by process 54321.\n  HINT:  See server log for query details.\n  CONTEXT:  SQL statement \"TRUNCATE TABLE fct_sales\".",
+    "root_cause": "两个 dbt 任务并发运行，同时尝试操作对方依赖的表，导致数据库死锁。",
+    "fix_steps": [
+      "检查是否有多个 dbt 任务同时写入同一张表",
+      "在 dbt 模型中配置 incremental materialization 避免 TRUNCATE",
+      "调整 DAG 调度时间，避免相关模型并发执行",
+      "使用 Airflow Pool 限制并发任务数",
+      "考虑使用事务隔离级别或行级锁"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-089",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "dbt 并发写入冲突",
+    "error_log": "(Environment: production)\nRunning with dbt=1.7.0\nDatabase Error in model fct_events (models/fct_events.sql)\n  could not serialize access due to concurrent update\n  DETAIL:  Reason code: 7.\n  HINT: The transaction might succeed if retried.\n\n  This can happen when multiple dbt processes are modifying the same table simultaneously.\n  Try reducing concurrency or use incremental models.",
+    "root_cause": "多个 dbt 进程同时修改同一张表，导致并发更新冲突。",
+    "fix_steps": [
+      "检查是否有多个 dbt run 同时运行",
+      "减少 dbt 运行的并发数（--threads）",
+      "使用增量模型（incremental）减少写入冲突",
+      "调整 DAG 调度避免同时运行相关模型",
+      "使用 Airflow Pool 控制并发"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-090",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "dbt 并发写入冲突",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.6.2\nDatabase Error in model dim_products (models/dim_products.sql)\n  could not serialize access due to concurrent update\n  DETAIL:  Reason code: 12.\n  HINT: The transaction might succeed if retried.\n\n  This can happen when multiple dbt processes are modifying the same table simultaneously.\n  Try reducing concurrency or use incremental models.",
+    "root_cause": "多个 dbt 进程同时修改同一张表，导致并发更新冲突。",
+    "fix_steps": [
+      "检查是否有多个 dbt run 同时运行",
+      "减少 dbt 运行的并发数（--threads）",
+      "使用增量模型（incremental）减少写入冲突",
+      "调整 DAG 调度避免同时运行相关模型",
+      "使用 Airflow Pool 控制并发"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-091",
+    "category": "concurrency_issue",
+    "subcategory": "Deadlock",
+    "title": "PostgreSQL 死锁",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nDatabase Error in model fct_order_summary (models/marts/fct_order_summary.sql)\n  deadlock detected\n  DETAIL:  Process 12345 waits for AccessExclusiveLock on relation 67890 of database 54321;\n  blocked by process 12346.\n  Process 12346 waits for AccessExclusiveLock on relation 67891 of database 54321;\n  blocked by process 12345.\n  HINT:  See server log for query details.\n  CONTEXT:  SQL statement \"TRUNCATE TABLE fct_order_summary\".",
+    "root_cause": "两个 dbt 任务并发运行，同时尝试操作对方依赖的表，导致数据库死锁。",
+    "fix_steps": [
+      "检查是否有多个 dbt 任务同时写入同一张表",
+      "在 dbt 模型中配置 incremental materialization 避免 TRUNCATE",
+      "调整 DAG 调度时间，避免相关模型并发执行",
+      "使用 Airflow Pool 限制并发任务数",
+      "考虑使用事务隔离级别或行级锁"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-092",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "dbt seed 加载失败 - 类型不匹配",
+    "error_log": "Running with dbt=1.7.0\nEncountered an error:\nRuntime Error\n  Failure in seed country_codes (data/country_codes.csv)\n    ERROR:  invalid input syntax for type integer: \"US\"\n    CONTEXT:  COPY country_codes, line 2, column country_id: \"US\"\n  This can happen when the column types in the CSV don't match the column types in the table.\n  Try running dbt seed --full-refresh to recreate the table.",
+    "root_cause": "dbt seed 的 CSV 文件中某列包含错误类型的值，与目标表的列类型不匹配。",
+    "fix_steps": [
+      "检查 CSV 文件中的数据类型",
+      "确认 schema 中定义的列类型是否正确",
+      "修正 CSV 数据或调整列类型定义",
+      "运行 dbt seed --full-refresh 重建表",
+      "验证 seed 数据是否正确加载"
+    ],
+    "severity": "low",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-093",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "dbt seed 加载失败 - 类型不匹配",
+    "error_log": "Running with dbt=1.6.0\nEncountered an error:\nRuntime Error\n  Failure in seed product_categories (data/product_categories.csv)\n    ERROR:  invalid input syntax for type numeric: \"N/A\"\n    CONTEXT:  COPY product_categories, line 2, column category_code: \"N/A\"\n  This can happen when the column types in the CSV don't match the column types in the table.\n  Try running dbt seed --full-refresh to recreate the table.",
+    "root_cause": "dbt seed 的 CSV 文件中某列包含错误类型的值，与目标表的列类型不匹配。",
+    "fix_steps": [
+      "检查 CSV 文件中的数据类型",
+      "确认 schema 中定义的列类型是否正确",
+      "修正 CSV 数据或调整列类型定义",
+      "运行 dbt seed --full-refresh 重建表",
+      "验证 seed 数据是否正确加载"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-094",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "Airflow DAG 找不到模块",
+    "error_log": "Broken DAG: [/opt/airflow/dags/custom_pipeline.py]\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/custom_pipeline.py\", line 8, in <module>\n    from custom_operators import CustomOperator\nModuleNotFoundError: No module named 'custom_operators'\n\nThe DAG file references a module that is not installed in the Airflow worker environment.\nMake sure all required packages are installed and available in the PYTHONPATH.",
+    "root_cause": "Airflow DAG 文件引用了未安装的自定义插件或第三方模块。",
+    "fix_steps": [
+      "检查 DAG 文件中导入的模块",
+      "确认 Airflow worker 环境中是否安装了该模块",
+      "如果是自定义插件，确保放置在 plugins 目录中",
+      "如果是第三方包，在 requirements.txt 中添加并重新构建镜像",
+      "重启 Airflow 服务并验证 DAG 加载"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-095",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "Airflow DAG 找不到模块",
+    "error_log": "Broken DAG: [/opt/airflow/dags/analytics_pipeline.py]\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/analytics_pipeline.py\", line 12, in <module>\n    from great_expectations import GreatExpectationsOperator\nModuleNotFoundError: No module named 'great_expectations'\n\nThe DAG file references a module that is not installed in the Airflow worker environment.\nMake sure all required packages are installed and available in the PYTHONPATH.",
+    "root_cause": "Airflow DAG 文件引用了未安装的自定义插件或第三方模块。",
+    "fix_steps": [
+      "检查 DAG 文件中导入的模块",
+      "确认 Airflow worker 环境中是否安装了该模块",
+      "如果是自定义插件，确保放置在 plugins 目录中",
+      "如果是第三方包，在 requirements.txt 中添加并重新构建镜像",
+      "重启 Airflow 服务并验证 DAG 加载"
+    ],
+    "severity": "high",
+    "source": "postgres",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-096",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "dbt seed 加载失败 - 类型不匹配",
+    "error_log": "(Environment: staging)\nRunning with dbt=1.7.0\nEncountered an error:\nRuntime Error\n  Failure in seed country_codes (data/country_codes.csv)\n    ERROR:  invalid input syntax for type integer: \"US\"\n    CONTEXT:  COPY country_codes, line 2, column country_id: \"US\"\n  This can happen when the column types in the CSV don't match the column types in the table.\n  Try running dbt seed --full-refresh to recreate the table.",
+    "root_cause": "dbt seed 的 CSV 文件中某列包含错误类型的值，与目标表的列类型不匹配。",
+    "fix_steps": [
+      "检查 CSV 文件中的数据类型",
+      "确认 schema 中定义的列类型是否正确",
+      "修正 CSV 数据或调整列类型定义",
+      "运行 dbt seed --full-refresh 重建表",
+      "验证 seed 数据是否正确加载"
+    ],
+    "severity": "low",
+    "source": "dbt",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-097",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "dbt seed 加载失败 - 类型不匹配",
+    "error_log": "(Environment: development)\nRunning with dbt=1.6.0\nEncountered an error:\nRuntime Error\n  Failure in seed product_categories (data/product_categories.csv)\n    ERROR:  invalid input syntax for type numeric: \"N/A\"\n    CONTEXT:  COPY product_categories, line 2, column category_code: \"N/A\"\n  This can happen when the column types in the CSV don't match the column types in the table.\n  Try running dbt seed --full-refresh to recreate the table.",
+    "root_cause": "dbt seed 的 CSV 文件中某列包含错误类型的值，与目标表的列类型不匹配。",
+    "fix_steps": [
+      "检查 CSV 文件中的数据类型",
+      "确认 schema 中定义的列类型是否正确",
+      "修正 CSV 数据或调整列类型定义",
+      "运行 dbt seed --full-refresh 重建表",
+      "验证 seed 数据是否正确加载"
+    ],
+    "severity": "low",
+    "source": "airflow",
+    "difficulty": 2
+  },
+  {
+    "fault_id": "FAULT-098",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "Airflow DAG 找不到模块",
+    "error_log": "(Environment: production)\nBroken DAG: [/opt/airflow/dags/custom_pipeline.py]\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/custom_pipeline.py\", line 8, in <module>\n    from custom_operators import CustomOperator\nModuleNotFoundError: No module named 'custom_operators'\n\nThe DAG file references a module that is not installed in the Airflow worker environment.\nMake sure all required packages are installed and available in the PYTHONPATH.",
+    "root_cause": "Airflow DAG 文件引用了未安装的自定义插件或第三方模块。",
+    "fix_steps": [
+      "检查 DAG 文件中导入的模块",
+      "确认 Airflow worker 环境中是否安装了该模块",
+      "如果是自定义插件，确保放置在 plugins 目录中",
+      "如果是第三方包，在 requirements.txt 中添加并重新构建镜像",
+      "重启 Airflow 服务并验证 DAG 加载"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 3
+  },
+  {
+    "fault_id": "FAULT-099",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "Airflow DAG 找不到模块",
+    "error_log": "(Environment: staging)\nBroken DAG: [/opt/airflow/dags/analytics_pipeline.py]\nTraceback (most recent call last):\n  File \"/opt/airflow/dags/analytics_pipeline.py\", line 12, in <module>\n    from great_expectations import GreatExpectationsOperator\nModuleNotFoundError: No module named 'great_expectations'\n\nThe DAG file references a module that is not installed in the Airflow worker environment.\nMake sure all required packages are installed and available in the PYTHONPATH.",
+    "root_cause": "Airflow DAG 文件引用了未安装的自定义插件或第三方模块。",
+    "fix_steps": [
+      "检查 DAG 文件中导入的模块",
+      "确认 Airflow worker 环境中是否安装了该模块",
+      "如果是自定义插件，确保放置在 plugins 目录中",
+      "如果是第三方包，在 requirements.txt 中添加并重新构建镜像",
+      "重启 Airflow 服务并验证 DAG 加载"
+    ],
+    "severity": "high",
+    "source": "airflow",
+    "difficulty": 1
+  },
+  {
+    "fault_id": "FAULT-100",
+    "category": "operation_error",
+    "subcategory": "Deployment/Backup",
+    "title": "dbt seed 加载失败 - 类型不匹配",
+    "error_log": "(Environment: development)\nRunning with dbt=1.7.0\nEncountered an error:\nRuntime Error\n  Failure in seed country_codes (data/country_codes.csv)\n    ERROR:  invalid input syntax for type integer: \"US\"\n    CONTEXT:  COPY country_codes, line 2, column country_id: \"US\"\n  This can happen when the column types in the CSV don't match the column types in the table.\n  Try running dbt seed --full-refresh to recreate the table.",
+    "root_cause": "dbt seed 的 CSV 文件中某列包含错误类型的值，与目标表的列类型不匹配。",
+    "fix_steps": [
+      "检查 CSV 文件中的数据类型",
+      "确认 schema 中定义的列类型是否正确",
+      "修正 CSV 数据或调整列类型定义",
+      "运行 dbt seed --full-refresh 重建表",
+      "验证 seed 数据是否正确加载"
+    ],
+    "severity": "medium",
+    "source": "dbt",
+    "difficulty": 2
+  }
+]

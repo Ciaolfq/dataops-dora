@@ -1,0 +1,20 @@
+﻿# Large raw data files
+soposts.json
+ghissues.json
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+
+# Vector DB
+chroma_db/
+*.bin
+
+# Logs
+*.log
+evaluation/results/*.json
+
+# OS
+.DS_Store
+Thumbs.db
