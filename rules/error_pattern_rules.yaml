@@ -1,0 +1,190 @@
+# DORA Error Pattern Rules — Stage 1 Pre-classification
+# ============================================================
+# These 20 deterministic rules form DORA's first-stage prior.
+# They are applied BEFORE retrieval to establish an initial
+# hypothesis about the fault subcategory, preventing the
+# retriever from being distracted by irrelevant documents.
+#
+# Order matters: more specific patterns are listed first.
+# The first matching rule wins.
+#
+# Each rule:
+#   pattern:      regex matched against lowercased error log
+#   category:     Definition | Data | Execution
+#   subcategory:  fine-grained subcategory
+#   rc_label:     standard root cause label (from 20-label taxonomy)
+#   query_hints:  keyword hints used for multi-query expansion
+
+rules:
+
+  # ── Execution Faults ──────────────────────────────────────
+  - pattern: "permission denied|insufficient privilege|42501|access denied"
+    category: Execution
+    subcategory: Permission
+    rc_label: EXE_PERM_DENIED
+    query_hints:
+      - permission denied postgres
+      - grant privileges
+
+  - pattern: "deadlock|deadlock detected"
+    category: Execution
+    subcategory: Concurrency
+    rc_label: EXE_CONC_DEADLOCK
+    query_hints:
+      - postgres deadlock fix
+      - deadlock detected
+
+  - pattern: "no space left|disk full|insufficient disk|out of disk"
+    category: Execution
+    subcategory: Resource
+    rc_label: EXE_RES_DISK
+    query_hints:
+      - disk full no space
+      - insufficient disk space
+
+  - pattern: "out of memory|memory exhausted|oom|insufficient memory"
+    category: Execution
+    subcategory: Resource
+    rc_label: EXE_RES_MEMORY
+    query_hints:
+      - out of memory error
+      - insufficient memory postgres
+
+  - pattern: "connection refused|could not connect|connection failed|cannot connect"
+    category: Execution
+    subcategory: Dependency
+    rc_label: EXE_DEP_CONNECTION
+    query_hints:
+      - connection refused database
+      - postgres connection error
+
+  - pattern: "timeout|timed out|statement timeout|query timeout"
+    category: Execution
+    subcategory: Performance
+    rc_label: EXE_PERF_TIMEOUT
+    query_hints:
+      - query timeout fix
+      - optimize slow query
+
+  # ── Definition Faults ─────────────────────────────────────
+  - pattern: "circular|cycle.*detect|cyclic.*dependency|circular reference"
+    category: Definition
+    subcategory: Dependency
+    rc_label: DEF_DEP_CIRCULAR
+    query_hints:
+      - circular dependency dag
+      - circular reference error
+
+  - pattern: "var.*not defined|undefined variable|variable.*not found|dbt.*var"
+    category: Definition
+    subcategory: Config
+    rc_label: DEF_CONFIG_VAR
+    query_hints:
+      - dbt var undefined
+      - dbt variable config
+
+  - pattern: "materialized|dbt_project.*yml|invalid.*config|misconfigured"
+    category: Definition
+    subcategory: Config
+    rc_label: DEF_CONFIG_MATERIALIZED
+    query_hints:
+      - dbt materialized configuration
+      - dbt_project.yml settings
+
+  - pattern: "function.*does not exist|undefined function|function.*not found"
+    category: Definition
+    subcategory: Syntax
+    rc_label: DEF_SYNTAX_FUNCTION
+    query_hints:
+      - postgres undefined function
+      - create function sql
+
+  - pattern: "model.*not found|ref.*not found|could not find model|undefined model"
+    category: Definition
+    subcategory: Dependency
+    rc_label: DEF_DEP_REF
+    query_hints:
+      - dbt ref not found
+      - dbt model dependency
+
+  - pattern: "syntax error|parse error|syntaxerror|sqlstate.*42601"
+    category: Definition
+    subcategory: Syntax
+    rc_label: DEF_SYNTAX_SQL
+    query_hints:
+      - sql syntax error
+      - postgres parse error
+
+  # ── Data Faults ───────────────────────────────────────────
+  - pattern: "foreign key.*violat|violates foreign key|fk.*constraint|referential integrity"
+    category: Data
+    subcategory: Quality
+    rc_label: DATA_QUALITY_FK
+    query_hints:
+      - foreign key violation
+      - referential integrity
+
+  - pattern: "duplicate key|unique constraint|violates unique|duplicate.*value"
+    category: Data
+    subcategory: Quality
+    rc_label: DATA_QUALITY_UNIQUE
+    query_hints:
+      - duplicate key unique constraint
+      - unique violation fix
+
+  - pattern: "null value.*not null|not null.*violat|violates not-null|notnull"
+    category: Data
+    subcategory: Quality
+    rc_label: DATA_QUALITY_NOTNULL
+    query_hints:
+      - not null constraint violation
+      - null value error
+
+  - pattern: "invalid input syntax|cannot cast|invalid.*type|type.*mismatch|datatype.*error"
+    category: Data
+    subcategory: Type
+    rc_label: DATA_TYPE_CAST
+    query_hints:
+      - data type mismatch
+      - postgres cast error
+
+  - pattern: "schema.*changed|schema drift|source schema|column.*added|column.*dropped"
+    category: Data
+    subcategory: Schema
+    rc_label: DATA_SCHEMA_DRIFT
+    query_hints:
+      - schema drift pipeline
+      - source schema change
+
+  - pattern: "relation.*does not exist|table.*does not exist|relation.*not found"
+    category: Data
+    subcategory: Schema
+    rc_label: DATA_SCHEMA_TABLE
+    query_hints:
+      - table not exist postgres
+      - relation not found error
+
+  - pattern: "column.*does not exist|unknown column|column.*not found|missing.*column"
+    category: Data
+    subcategory: Schema
+    rc_label: DATA_SCHEMA_COLUMN
+    query_hints:
+      - column not exist error
+      - missing column postgres
+
+  # Note: DEF_CONFIG_YAML is covered implicitly by DEF_CONFIG_MATERIALIZED
+  # for dbt_project.yml errors. If finer granularity is needed, add before it:
+  # - pattern: "yaml.*error|schema.yml.*error|dbt_project.*yml.*error"
+  #   category: Definition
+  #   subcategory: Config
+  #   rc_label: DEF_CONFIG_YAML
+
+summary:
+  total_rules: 19  # one YAML-config rule commented out above
+  categories:
+    Definition: 6 subcategories (Config, Syntax, Dependency)
+    Data: 7 subcategories (Schema, Type, Quality)
+    Execution: 6 subcategories (Dependency, Performance, Concurrency, Permission, Resource)
+  coverage: "Covers 19 of 20 taxonomy labels; the 20th (DEF_CONFIG_YAML) is subsumed by DEF_CONFIG_MATERIALIZED"
+  execution_time: "< 0.001 seconds per log (pure regex matching, no LLM calls)"
+  role: "Stage 1 of DORA's 4-stage pipeline — establishes a cheap, high-precision prior before expensive retrieval and reranking"
